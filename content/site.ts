@@ -1,6 +1,6 @@
 /**
  * Dati dello studio. Contatti approvati dal titolare il 24/11/2026.
- * Dati legali e dominio: segnaposto finché non confermati (regola in CLAUDE.md).
+ * Dominio: segnaposto finché non acquistato (regola in CLAUDE.md).
  */
 export const studio = {
   name: "ACANFORA CREATIVE",
@@ -8,11 +8,13 @@ export const studio = {
   email: "morganacanfora5@gmail.com",
   whatsapp: { number: "393290211669", display: "+39 329 021 1669" },
   instagram: { handle: "@acanforacreative", url: "https://www.instagram.com/acanforacreative/" },
+  // Dati legali dal certificato di attribuzione P.IVA (Agenzia delle Entrate, 09/07/2025), approvati dal titolare.
+  // Il codice fiscale NON va pubblicato.
   legal: {
-    // TODO: dati legali da confermare dal titolare
-    holder: "[[Titolare — DA CONFERMARE]]",
-    address: "[[Sede — DA CONFERMARE]]",
-    vat: "[[P.IVA — DA CONFERMARE]]",
+    holder: "SMM di Acanfora Morgan",
+    form: "Ditta individuale",
+    address: "Via Lo Porto 111/D, 84018 Scafati (SA)",
+    vat: "06367880652",
   },
   // TODO: dominio da scegliere
   domain: "[[DOMINIO — DA CONFERMARE]]",
