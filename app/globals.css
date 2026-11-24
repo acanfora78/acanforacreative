@@ -237,3 +237,84 @@ body {
   color: var(--muted);
   font-weight: 400;
 }
+
+/* ───────── Fase 7: movimento ─────────
+ * Aperture di pagina in CSS (nessun JavaScript): il primo contenuto non aspetta il caricamento.
+ * Movimenti allo scroll: GSAP in components/motion/MotionScope.tsx.
+ * Cambio pagina: React <ViewTransition> (components/motion/PageTransition.tsx).
+ */
+@media (prefers-reduced-motion: no-preference) {
+  /* Righe del titolo che salgono da una maschera */
+  .intro-line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+  .intro-line > span {
+    display: block;
+    animation: intro-rise 1.3s var(--ease-reveal) both;
+    animation-delay: calc(0.35s + var(--i, 0) * 0.12s);
+  }
+  .intro-fade {
+    animation: intro-fade 1.1s var(--ease-reveal) both;
+    animation-delay: var(--d, 0.9s);
+  }
+  /* Letterbox: due bande nere che si aprono all'ingresso della home */
+  .letterbox::before,
+  .letterbox::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    height: 50%;
+    z-index: 30;
+    background: var(--color-nero);
+    pointer-events: none;
+    animation: letterbox-open 1.4s var(--ease-cinema) 0.1s both;
+  }
+  .letterbox::before {
+    top: 0;
+    transform-origin: top;
+  }
+  .letterbox::after {
+    bottom: 0;
+    transform-origin: bottom;
+  }
+}
+@keyframes intro-rise {
+  from { transform: translateY(105%); }
+  to { transform: none; }
+}
+@keyframes intro-fade {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes letterbox-open {
+  from { transform: scaleY(1); }
+  to { transform: scaleY(0); }
+}
+
+/* Cambio pagina: dissolvenza con un leggero respiro, come uno stacco in montaggio */
+::view-transition-old(.page) {
+  animation: 280ms var(--ease-quiet) both vt-out;
+}
+::view-transition-new(.page) {
+  animation: 520ms var(--ease-reveal) 120ms both vt-in;
+}
+::view-transition-group(.cover) {
+  animation-duration: 700ms;
+  animation-timing-function: var(--ease-cinema);
+}
+@keyframes vt-out {
+  to { opacity: 0; transform: scale(0.985); }
+}
+@keyframes vt-in {
+  from { opacity: 0; transform: translateY(12px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

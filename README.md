@@ -31,4 +31,10 @@ Senza `RESEND_API_KEY` il modulo valida i dati e invita a scrivere per email o W
 ## Portfolio
 `content/projects.ts`. Solo progetti reali; `published: false` li nasconde (rispondono 404).
 
+## Animazioni
+- Aperture di pagina (letterbox, titoli che salgono): solo CSS, in `app/globals.css` (classi `letterbox`, `intro-line`, `intro-fade`).
+- Movimenti allo scroll: GSAP + ScrollTrigger + SplitText in `components/motion/MotionScope.tsx`, attivati da attributi `data-split`, `data-reveal`, `data-stagger`, `data-wipe`, `data-parallax`, `data-draw`.
+- Cambio pagina e copertina condivisa griglia → case study: React `<ViewTransition>` in `components/motion/PageTransition.tsx`.
+- Con "riduci movimento" del sistema operativo tutto si spegne e i contenuti restano visibili.
+
 Stato: in sviluppo, non pubblicato.

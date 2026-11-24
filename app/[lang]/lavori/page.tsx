@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SharedCover } from "@/components/motion/PageTransition";
 import { ProjectCover } from "@/components/home/Sections";
 import { PageIntro, PageShell } from "@/components/site/Page";
 import { publishedProjects } from "@/content/projects";
@@ -21,11 +22,13 @@ export default async function WorkPage({ params }: PageProps<"/[lang]/lavori">) 
           {publishedProjects.map((pr) => {
             const kind = t.work.kinds[pr.kind];
             return (
-              <li key={pr.slug}>
+              <li key={pr.slug} data-reveal>
                 <Link href={href(locale, "lavori", pr.slug)} className="group block">
-                  <div className="relative aspect-[4/5] overflow-hidden border border-line sm:aspect-[4/3]">
-                    <ProjectCover project={pr} locale={locale} t={t} />
-                  </div>
+                  <SharedCover slug={pr.slug}>
+                    <div className="relative aspect-[4/5] overflow-hidden border border-line sm:aspect-[4/3]">
+                      <ProjectCover project={pr} locale={locale} t={t} />
+                    </div>
+                  </SharedCover>
                   <div className="mt-5 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
                     <h2 className="font-display text-heading">{pr.name}</h2>
                     <p className="label text-muted">

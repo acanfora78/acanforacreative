@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { SharedCover } from "@/components/motion/PageTransition";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Logo, type LogoVariant } from "@/components/brand/Logo";
@@ -43,10 +44,12 @@ export default async function CaseStudyPage({ params }: PageProps<"/[lang]/lavor
             ← {c.back}
           </Link>
           <h1 id="cs-title" className="font-display mt-10 text-display-xl text-balance">
-            {pr.name}
+            <span className="intro-line">
+              <span>{pr.name}</span>
+            </span>
           </h1>
           {kind && <p className="label mt-6 text-accent">{kind}</p>}
-          <dl className="mt-12 grid grid-cols-2 gap-8 border-t border-line pt-8 md:grid-cols-4">
+          <dl className="intro-fade mt-12 grid grid-cols-2 gap-8 border-t border-line pt-8 md:grid-cols-4 [--d:0.7s]">
             {pr.kind === "client" && (
               <div>
                 <dt className="label text-muted">{c.client}</dt>
@@ -68,9 +71,11 @@ export default async function CaseStudyPage({ params }: PageProps<"/[lang]/lavor
           </dl>
         </div>
         <div className="container-site py-16">
-          <div className="relative aspect-[4/5] overflow-hidden border border-line sm:aspect-[16/9]">
-            <ProjectCover project={pr} locale={locale} t={t} large />
-          </div>
+          <SharedCover slug={pr.slug}>
+            <div className="relative aspect-[4/5] overflow-hidden border border-line sm:aspect-[16/9]">
+              <ProjectCover project={pr} locale={locale} t={t} large />
+            </div>
+          </SharedCover>
         </div>
       </section>
 
@@ -81,9 +86,9 @@ export default async function CaseStudyPage({ params }: PageProps<"/[lang]/lavor
             <h2 id="overview" className="sr-only">
               {c.overview}
             </h2>
-            <p className="font-display text-display-m text-pretty">{pr.summary[locale]}</p>
+            <p data-split className="font-display text-display-m text-pretty">{pr.summary[locale]}</p>
             <h3 className="label mt-14 mb-5 text-muted">{c.done}</h3>
-            <ul className="border-t border-line">
+            <ul data-stagger className="border-t border-line">
               {pr.services[locale].map((sv) => (
                 <li key={sv} className="border-b border-line py-4 text-lead">
                   {sv}

@@ -46,12 +46,12 @@ export default async function ServicesPage({ params }: PageProps<"/[lang]/serviz
             <div className="container-site grid-editorial gap-y-12">
               <div className="col-span-4 md:col-span-8 lg:col-span-5">
                 <p className="label mb-6 text-muted">{pad(i + 1)}</p>
-                <h2 id={`${item.slug}-title`} className="font-display text-display-m text-balance">
+                <h2 id={`${item.slug}-title`} data-split className="font-display text-display-m text-balance">
                   {item.name}
                 </h2>
                 <p className="mt-8 text-lead font-light">{item.intro}</p>
               </div>
-              <div className="col-span-4 grid gap-10 sm:grid-cols-2 md:col-span-8 lg:col-span-6 lg:col-start-7">
+              <div data-reveal className="col-span-4 grid gap-10 sm:grid-cols-2 md:col-span-8 lg:col-span-6 lg:col-start-7">
                 <div>
                   <Label className="mb-4">{s.includesLabel}</Label>
                   <ul className="space-y-3 border-t border-line pt-4">

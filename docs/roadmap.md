@@ -10,7 +10,7 @@ Ogni fase si chiude con una revisione e un'approvazione del titolare. Branch ded
 | 4 | Prototipo visivo della homepage (statico, IT/EN, testi reali) | approvata |
 | 5 | Approvazione homepage | approvata (24/11/2026) |
 | 6 | Pagine e componenti restanti (Studio, Servizi, Lavori, case study, Contatti, pagine legali) | approvata |
-| 7 | Animazioni e interazioni (GSAP, transizioni di pagina) | in corso |
+| 7 | Animazioni e interazioni (GSAP, transizioni di pagina) | in revisione |
 | 8 | SEO, performance, accessibilità, QA | da fare |
 
 ## Architettura approvata (fase 1)
