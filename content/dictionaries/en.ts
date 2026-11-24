@@ -18,7 +18,9 @@ export const en = {
     switchTo: "Italiano",
   },
   hero: {
-    eyebrow: "Creative Digital Studio",
+    eyebrow: "Creative Digital Studio — Brand · Web · E-commerce · AI",
+    skipIntro: "Skip intro",
+    introLabel: "Intro",
     titleLines: ["Every brand has a story.", "We put it on screen."],
     text: "Visual identities, websites, e-commerce and digital content, crafted with the care of a film production.",
     primary: "Let's talk about your project",

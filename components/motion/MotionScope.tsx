@@ -19,6 +19,7 @@ gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
  * - data-wipe    immagine che si scopre dal basso, come un sipario
  * - data-parallax contenuto che scorre più lento della pagina (dentro un contenitore con overflow nascosto)
  * - data-draw    filetto che si disegna da sinistra
+ * - (fase 9.5) sezioni chiare/scure consecutive: lo sfondo sfuma da un tema all'altro allo scroll
  *
  * Ogni pagina ha il suo MotionScope: con Cache Components le pagine nascoste restano nel DOM,
  * e lo scope garantisce che animazioni e ScrollTrigger vengano rimossi quando la pagina si nasconde.
@@ -69,14 +70,37 @@ export function MotionScope({ children }: { children: ReactNode }) {
         });
 
         q<HTMLElement>("[data-wipe]").forEach((el) => {
+          const trigger = { trigger: el, start: "top 85%", once: true };
           gsap.fromTo(
             el,
             { clipPath: "inset(100% 0% 0% 0%)" },
-            { clipPath: "inset(0% 0% 0% 0%)", duration: 1.6, ease: "expo.inOut", scrollTrigger: { trigger: el, start: "top 85%", once: true } },
+            { clipPath: "inset(0% 0% 0% 0%)", duration: 1.6, ease: "expo.inOut", scrollTrigger: trigger },
+          );
+          // Fase 9.5: mentre il sipario si apre, l'immagine arretra da 1,08 a 1 (stesso motore della parallasse).
+          const inner = el.querySelector<HTMLElement>("[data-parallax]");
+          if (inner) gsap.fromTo(inner, { scale: 1.08 }, { scale: 1, duration: 2, ease: "expo.out", scrollTrigger: trigger });
+        });
+
+        // Fase 9.5: passaggio nero ↔ avorio. Una sezione che cambia tema rispetto alla precedente
+        // parte dal colore di quella e arriva al suo mentre entra nello schermo.
+        q<HTMLElement>(".theme-light, .theme-dark").forEach((el) => {
+          const prev = el.previousElementSibling;
+          if (!prev) return;
+          const light = el.classList.contains("theme-light");
+          if (!prev.classList.contains(light ? "theme-dark" : "theme-light")) return;
+          const from = getComputedStyle(prev).backgroundColor;
+          const to = getComputedStyle(el).backgroundColor;
+          gsap.fromTo(
+            el,
+            { backgroundColor: from },
+            // immediateRender: false — finché la sezione non arriva sullo schermo resta col suo colore
+            // (contrasto corretto al caricamento e per chi non scorre).
+            { backgroundColor: to, ease: "none", immediateRender: false, scrollTrigger: { trigger: el, start: "top bottom", end: "top 45%", scrub: true } },
           );
         });
 
         q<HTMLElement>("[data-parallax]").forEach((el) => {
+          // fromTo su yPercent soltanto: la scala del sipario (sopra) resta indipendente.
           gsap.fromTo(
             el,
             { yPercent: -6 },
