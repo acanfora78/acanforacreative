@@ -1,0 +1,26 @@
+ACANFORA CREATIVE — MASTER LOGO / PRIMA CONSEGNA
+
+Tipografia scelta:
+- ACANFORA: GFS Didot Regular, convertito in tracciati SVG.
+- CREATIVE: Lato Regular, convertito in tracciati SVG.
+La conversione in tracciati evita dipendenze dai font installati sul dispositivo.
+
+Licenza:
+- GFS Didot: SIL Open Font License 1.1. Copyright e licenza della font software restano ai rispettivi titolari.
+- Lato: SIL Open Font License 1.1. Per la distribuzione del font software originale, includere la licenza; i file logo contengono solo tracciati.
+- Questa cartella contiene i loghi derivati, non i file font originali.
+
+Palette:
+- Nero: #111111
+- Avorio: #F7F4EC
+
+File:
+- 01_logo_master_avorio.svg — logo principale su avorio
+- 02_logo_master_trasparente.svg — logo senza fondo
+- 03_logo_master_fondo_nero.svg — versione inversa
+- 04_simbolo_instagram.svg — simbolo autonomo quadrato
+- 05_lockup_orizzontale.svg — composizione orizzontale
+- PNG — esportazioni raster ad alta risoluzione
+
+Nota:
+Questa è una prima esecuzione vettoriale del concept approvato. Prima di definirla consegna finale occorre controllare kerning, spaziature ottiche, resa in stampa, resa avatar a 32–40 px e originalità del simbolo rispetto a marchi registrati.
