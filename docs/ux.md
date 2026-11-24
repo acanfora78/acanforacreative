@@ -79,9 +79,16 @@ Campi del modulo: nome*, email*, telefono, azienda o attività, servizi di inter
 
 Mancano per ogni progetto: ruolo esatto, anno, materiali (immagini reali). La scelta dei progetti in evidenza è una proposta.
 
-## Domande aperte
-1. Ruolo e anno per ogni progetto.
-2. Studio: chi presentare (solo tu o un team), foto, breve bio.
-3. Tempi di risposta da indicare in Contatti.
-4. Campo "budget indicativo" nel modulo: sì o no?
-5. Social da collegare (Instagram, LinkedIn, Behance…).
+## Decisioni del titolare (fase 3, 24/11/2026)
+- Fase 3 approvata.
+- Anno di tutti i progetti: 2026. Ruolo esatto per progetto: ancora da confermare.
+- Pagina Studio: presenta solo il titolare. Bio scritta da noi (bozza in `docs/contenuti/studio-bio.md`, da approvare).
+- Social: Instagram `@acanforacreative`.
+- In evidenza in home: Sudditalia, Osteria Il Tormentone, Kormè (confermato).
+- Domande frequenti nella pagina Servizi: sì.
+
+## Domande ancora aperte
+1. Ruolo esatto per ogni progetto.
+2. Nome e cognome da mostrare nella pagina Studio.
+3. Campo "budget indicativo" nel modulo e tempi di risposta da indicare.
+4. Foto del titolare: vedi nota in `docs/contenuti/studio-bio.md`.
