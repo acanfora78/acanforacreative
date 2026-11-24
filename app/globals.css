@@ -1,1 +1,189 @@
 @import "tailwindcss";
+
+/*
+ * ACANFORA CREATIVE — design token (fase 2)
+ * Documentazione: docs/design-system.md · Anteprima: /design-system
+ *
+ * Identità: Nero #111111 e Avorio #F7F4EC (ufficiali, dal logo master).
+ * Graphite e oro sono solo supporto (superfici, filetti, dettagli), mai identità.
+ * Contrasti WCAG verificati: vedi docs/design-system.md.
+ */
+
+@theme {
+  /* Colori di base (valori grezzi) */
+  --color-nero: #111111;
+  --color-avorio: #f7f4ec;
+  --color-graphite: #242424;
+  --color-oro: #a89575; /* solo su fondo scuro: 6.49:1 su nero */
+  --color-oro-scuro: #7a6a4f; /* equivalente su avorio: 4.77:1 */
+
+  /* Font (variabili impostate da next/font in app/layout.tsx) */
+  --font-display: var(--font-gfs-didot), "Didot", "Bodoni 72", "Times New Roman", serif;
+  --font-sans: var(--font-lato), "Helvetica Neue", Arial, sans-serif;
+
+  /* Scala tipografica fluida (360px → 1600px). Didot mai sotto 32px. */
+  --text-display-xl: clamp(3.5rem, 1.81rem + 7.5vw, 11rem);
+  --text-display-xl--line-height: 0.92;
+  --text-display-l: clamp(2.75rem, 1.6rem + 5.1vw, 7.5rem);
+  --text-display-l--line-height: 0.96;
+  --text-display-m: clamp(2.25rem, 1.6rem + 2.9vw, 4.75rem);
+  --text-display-m--line-height: 1.02;
+  --text-heading: clamp(2rem, 1.71rem + 1.3vw, 3rem);
+  --text-heading--line-height: 1.08;
+  --text-lead: clamp(1.25rem, 1.14rem + 0.48vw, 1.625rem);
+  --text-lead--line-height: 1.45;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.65;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.55;
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.2;
+
+  /* Spaziature: base 4px; ritmo di sezione fluido */
+  --spacing: 0.25rem;
+  --spacing-gutter: clamp(1rem, 0.71rem + 1.3vw, 2rem);
+  --spacing-margin: clamp(1.25rem, 0.5rem + 3.3vw, 4rem);
+  --spacing-section: clamp(6rem, 3.68rem + 10.3vw, 14rem);
+
+  /* Contenitori */
+  --container-site: 105rem; /* 1680px */
+  --container-text: 40rem; /* ~65 caratteri */
+
+  /* Curve di movimento */
+  --ease-cinema: cubic-bezier(0.76, 0, 0.24, 1); /* apertura/chiusura di scena */
+  --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1); /* entrata, decelerazione lunga */
+  --ease-quiet: cubic-bezier(0.33, 1, 0.68, 1); /* micro-interazioni */
+}
+
+/* Temi semantici: lo sfondo di una sezione decide i colori del contenuto. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+}
+
+:root,
+.theme-dark {
+  --bg: #111111;
+  --fg: #f7f4ec; /* 17.18:1 */
+  --muted: #aba79e; /* 7.87:1 su nero */
+  --surface: #242424;
+  --line: #2e2d2b; /* filetti decorativi */
+  --accent: #a89575; /* 6.49:1 */
+  --focus: #f7f4ec;
+  color-scheme: dark;
+}
+
+.theme-light {
+  --bg: #f7f4ec;
+  --fg: #111111; /* 17.18:1 */
+  --muted: #5e5a52; /* 6.24:1 su avorio */
+  --surface: #efebe1;
+  --line: #d8d3c7;
+  --accent: #7a6a4f; /* 4.77:1 */
+  --focus: #111111;
+  color-scheme: light;
+}
+
+.theme-dark,
+.theme-light {
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+/* Durate del motion */
+:root {
+  --dur-micro: 150ms;
+  --dur-short: 300ms;
+  --dur-medium: 600ms;
+  --dur-long: 1000ms;
+  --dur-scene: 1600ms;
+}
+
+html {
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+:focus-visible {
+  outline: 1px solid var(--focus);
+  outline-offset: 4px;
+}
+
+/* Tipografia di brand */
+@utility font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  font-kerning: normal;
+  font-feature-settings: "kern", "liga";
+}
+
+/* Etichetta spaziata, come "CREATIVE" nel logo */
+@utility label {
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  line-height: var(--text-label--line-height);
+  font-weight: 400;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+/* Contenitore con margini fluidi */
+@utility container-site {
+  width: 100%;
+  max-width: var(--container-site);
+  margin-inline: auto;
+  padding-inline: var(--spacing-margin);
+}
+
+/* Griglia editoriale 4 / 8 / 12 colonne */
+@utility grid-editorial {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--spacing-gutter);
+  @media (width >= 48rem) {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+  @media (width >= 64rem) {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+}
+
+/* Testo lungo: misura leggibile e sillabazione per IT/EN */
+@utility prose-measure {
+  max-width: var(--container-text);
+  hyphens: auto;
+  text-wrap: pretty;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -5,7 +5,7 @@ Ogni fase si chiude con una revisione e un'approvazione del titolare. Branch ded
 | Fase | Contenuto | Stato |
 |---|---|---|
 | 1 | Discovery e architettura tecnica | approvata |
-| 2 | Direzione creativa e design system (token, tipografia, griglia, motion, uso del logo) | in corso |
+| 2 | Direzione creativa e design system (token, tipografia, griglia, motion, uso del logo) | in revisione |
 | 3 | Struttura UX e wireframe (sitemap, flussi verso il contatto, wireframe a bassa fedeltà) | da fare |
 | 4 | Prototipo visivo della homepage (statico, IT/EN, testi reali) | da fare |
 | 5 | Approvazione homepage | da fare |
