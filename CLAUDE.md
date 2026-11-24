@@ -19,7 +19,8 @@ Fonte autorevole delle decisioni: `docs/handoff/`. Stato e piano: `docs/`.
 
 ## Dati dello studio
 - Approvati dal titolare (24/11/2026): Morgan Acanfora; email morganacanfora5@gmail.com; WhatsApp +39 329 021 1669; Instagram @acanforacreative. Fonte: `content/site.ts`.
-- Dati legali (approvati): SMM di Acanfora Morgan, ditta individuale, Via Lo Porto 111/D, 84018 Scafati (SA), P.IVA 06367880652. Il codice fiscale non va MAI pubblicato né salvato nel repository.
+- Dati legali (approvati): SMM di Acanfora Morgan, ditta individuale, P.IVA 06367880652. Per scelta del titolare NON pubblicare indirizzi. Il codice fiscale non va MAI pubblicato né salvato nel repository.
+- Codici ATECO: lasciati invariati per scelta del titolare.
 - Ancora mancante: dominio (lo acquista il titolare) → segnaposto `[[DOMINIO — DA CONFERMARE]]`.
 - Tempi di risposta: "il prima possibile", nessun numero di ore promesso.
 - Nessun deploy o pubblicazione senza approvazione esplicita del titolare.
