@@ -144,6 +144,11 @@ export const projects: Project[] = [
       it: "L'identità dello studio: simbolo ad anello aperto, Didot e Lato, nero e avorio.",
       en: "The studio's own identity: open-loop symbol, Didot and Lato, black and ivory.",
     },
+    // Copertina: il logo master reale (non uno screenshot).
+    cover: {
+      src: "/brand/03_logo_master_fondo_nero.svg",
+      alt: { it: "Logo ACANFORA CREATIVE su fondo nero", en: "ACANFORA CREATIVE logo on black" },
+    },
     published: true,
     featured: false,
   },

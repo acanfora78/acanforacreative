@@ -7,7 +7,18 @@ import { href, type Locale, type RouteKey } from "@/lib/i18n";
  * Intestazione del sito. Su telefono il menu usa <details>: funziona anche senza JavaScript.
  * `current` serve al selettore di lingua per portare alla stessa pagina nell'altra lingua.
  */
-export function Header({ locale, t, current = "home" }: { locale: Locale; t: Dictionary; current?: RouteKey }) {
+export function Header({
+  locale,
+  t,
+  current = "home",
+  slug,
+}: {
+  locale: Locale;
+  t: Dictionary;
+  current?: RouteKey;
+  /** Sotto-pagina (es. slug del case study) da mantenere cambiando lingua. */
+  slug?: string;
+}) {
   const other: Locale = locale === "it" ? "en" : "it";
   const links = [
     { key: "studio", label: t.nav.studio },
@@ -16,7 +27,7 @@ export function Header({ locale, t, current = "home" }: { locale: Locale; t: Dic
   ] as const;
 
   const langSwitch = (
-    <Link href={href(other, current)} hrefLang={other} lang={other} className="label text-muted transition-colors hover:text-fg">
+    <Link href={slug ? href(other, current, slug) : href(other, current)} hrefLang={other} lang={other} className="label text-muted transition-colors hover:text-fg">
       <span aria-hidden="true">{other.toUpperCase()}</span>
       <span className="sr-only">{t.nav.switchTo}</span>
     </Link>
@@ -31,7 +42,12 @@ export function Header({ locale, t, current = "home" }: { locale: Locale; t: Dic
 
         <nav aria-label="Principale" className="hidden items-center gap-10 md:flex">
           {links.map((l) => (
-            <Link key={l.key} href={href(locale, l.key)} className="label text-muted transition-colors hover:text-fg">
+            <Link
+              key={l.key}
+              href={href(locale, l.key)}
+              aria-current={current === l.key ? "page" : undefined}
+              className="label text-muted transition-colors hover:text-fg aria-[current=page]:text-fg"
+            >
               {l.label}
             </Link>
           ))}

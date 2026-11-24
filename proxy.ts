@@ -1,5 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { publishedProjects } from "@/content/projects";
 import { correctSegment, defaultLocale, internalSegment, isLocale, type Locale } from "@/lib/i18n";
+
+// Progetti pubblicati: gli altri slug (nascosti o inesistenti) devono rispondere 404.
+const workSlugs = new Set(publishedProjects.map((p) => p.slug));
 
 /**
  * Lingue (Next 16: proxy.ts sostituisce middleware.ts).
@@ -18,7 +22,7 @@ export function proxy(request: NextRequest) {
   }
 
   const locale: Locale = first;
-  if (!second) return NextResponse.next();
+  if (!second) return remember(NextResponse.next(), request, locale);
 
   const fixed = correctSegment(locale, second);
   if (fixed !== undefined) {
@@ -28,13 +32,29 @@ export function proxy(request: NextRequest) {
   }
 
   const internal = internalSegment(locale, second);
+
+  // Case study: con Cache Components non esiste dynamicParams=false, quindi gli slug non pubblicati
+  // vengono mandati al catch-all, che risponde con un vero 404.
+  if (internal === "lavori" && rest.length > 0 && (rest.length > 1 || !workSlugs.has(rest[0]))) {
+    const url = request.nextUrl.clone();
+    url.pathname = `/${locale}/_404`;
+    return NextResponse.rewrite(url);
+  }
   if (internal !== undefined && internal !== second) {
     const url = request.nextUrl.clone();
     url.pathname = "/" + [locale, internal, ...rest].join("/");
-    return NextResponse.rewrite(url);
+    return remember(NextResponse.rewrite(url), request, locale);
   }
 
-  return NextResponse.next();
+  return remember(NextResponse.next(), request, locale);
+}
+
+/** Cookie tecnico "lang" (documentato nella cookie policy): ricorda l'ultima lingua visitata. */
+function remember(response: NextResponse, request: NextRequest, locale: Locale) {
+  if (request.cookies.get("lang")?.value !== locale) {
+    response.cookies.set("lang", locale, { path: "/", maxAge: 60 * 60 * 24 * 365, sameSite: "lax" });
+  }
+  return response;
 }
 
 function preferredLocale(request: NextRequest): Locale {

@@ -53,9 +53,11 @@ export function Manifesto({ t }: { t: Dictionary }) {
   );
 }
 
-function ProjectCover({ project, locale, t, large }: { project: Project; locale: Locale; t: Dictionary; large?: boolean }) {
+export function ProjectCover({ project, locale, t, large }: { project: Project; locale: Locale; t: Dictionary; large?: boolean }) {
   if (project.cover) {
-    const motion = "object-cover object-top transition-transform duration-[var(--dur-long)] ease-[var(--ease-reveal)] group-hover:scale-[1.03]";
+    // Loghi SVG: interi e centrati su nero; screenshot: riempiono e partono dall'alto.
+    const fit = project.cover.src.endsWith(".svg") ? "bg-nero object-contain p-[10%]" : "object-cover object-top";
+    const motion = `${fit} transition-transform duration-[var(--dur-long)] ease-[var(--ease-reveal)] group-hover:scale-[1.03]`;
     // Su telefono la copertina è verticale: si usa lo screenshot mobile, se c'è.
     return (
       <>

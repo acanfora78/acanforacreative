@@ -187,3 +187,53 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Testi legali */
+.legal {
+  font-size: var(--text-body);
+  line-height: 1.7;
+}
+.legal h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-heading);
+  line-height: 1.1;
+  margin: 3.5rem 0 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+.legal p,
+.legal ul,
+.legal address,
+.legal table {
+  margin-bottom: 1rem;
+}
+.legal ul {
+  list-style: square;
+  padding-left: 1.25rem;
+}
+.legal li {
+  margin-bottom: 0.5rem;
+}
+.legal a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.legal a:hover {
+  color: var(--accent);
+}
+.legal table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-small);
+}
+.legal th,
+.legal td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.75rem 0.75rem 0.75rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.legal th {
+  color: var(--muted);
+  font-weight: 400;
+}
