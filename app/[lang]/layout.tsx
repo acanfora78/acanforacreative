@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getDictionary } from "@/content/dictionaries";
 import { fontVariables } from "@/lib/fonts";
 import { isLocale, locales } from "@/lib/i18n";
+import { ogImage, robotsMeta, siteUrl } from "@/lib/site-url";
 import "../globals.css";
 
 export function generateStaticParams() {
@@ -14,11 +15,25 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
   if (!isLocale(lang)) return {};
   const t = getDictionary(lang);
   return {
+    // URL assoluti per canonical, hreflang e Open Graph (dominio da SITE_URL).
+    metadataBase: siteUrl(),
     title: t.meta.title,
     description: t.meta.description,
-    // Non indicizzare finché il sito non è approvato e pubblicato.
-    robots: { index: false, follow: false },
-    alternates: { languages: { it: "/it", en: "/en", "x-default": "/it" } },
+    applicationName: "ACANFORA CREATIVE",
+    // Indicizzazione solo con SITE_INDEXABLE="true" (dopo l'approvazione del titolare).
+    robots: robotsMeta,
+    alternates: { canonical: `/${lang}`, languages: { it: "/it", en: "/en", "x-default": "/it" } },
+    openGraph: {
+      type: "website",
+      siteName: "ACANFORA CREATIVE",
+      locale: lang === "it" ? "it_IT" : "en_US",
+      alternateLocale: lang === "it" ? ["en_US"] : ["it_IT"],
+      url: `/${lang}`,
+      title: t.meta.title,
+      description: t.meta.description,
+      images: [ogImage],
+    },
+    twitter: { card: "summary_large_image", images: [ogImage.url] },
   };
 }
 

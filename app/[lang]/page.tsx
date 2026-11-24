@@ -4,11 +4,12 @@ import { MotionScope } from "@/components/motion/MotionScope";
 import { PageTransition } from "@/components/motion/PageTransition";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
+import { StructuredData } from "@/components/site/StructuredData";
 import { getDictionary } from "@/content/dictionaries";
 import { featuredProjects } from "@/content/projects";
 import { isLocale } from "@/lib/i18n";
 
-/** Homepage (fase 4): prototipo statico, stessa struttura approvata nei wireframe. */
+/** Homepage: struttura approvata in fase 4, movimento in fase 7, dati strutturati in fase 8. */
 export default async function Home({ params }: PageProps<"/[lang]">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
@@ -31,6 +32,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         </main>
       </PageTransition>
       <Footer locale={lang} t={t} />
+      <StructuredData locale={lang} description={t.meta.description} services={t.services.items.map((s) => s.name)} />
     </>
   );
 }

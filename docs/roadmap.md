@@ -11,7 +11,8 @@ Ogni fase si chiude con una revisione e un'approvazione del titolare. Branch ded
 | 5 | Approvazione homepage | approvata (24/11/2026) |
 | 6 | Pagine e componenti restanti (Studio, Servizi, Lavori, case study, Contatti, pagine legali) | approvata |
 | 7 | Animazioni e interazioni (GSAP, transizioni di pagina) | approvata |
-| 8 | SEO, performance, accessibilità, QA | in corso |
+| 8 | SEO, performance, accessibilità, QA | approvata — vedi `docs/pubblicazione.md` |
+| 9 | Scultura 3D master, intro cinematica, motion system v2 (concept C "Lama") | in corso |
 
 ## Architettura approvata (fase 1)
 - Next.js 16 App Router, TypeScript strict, Tailwind CSS 4, componenti server di default.

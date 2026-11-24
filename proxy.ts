@@ -13,6 +13,14 @@ const workSlugs = new Set(publishedProjects.map((p) => p.slug));
  */
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Pagine interne di revisione (design system, wireframe): mai visibili in produzione.
+  if (/^\/(design-system|wireframes)(\/|$)/.test(pathname)) {
+    if (process.env.VERCEL_ENV !== "production") return NextResponse.next();
+    const url = request.nextUrl.clone();
+    url.pathname = `/${defaultLocale}/_404`;
+    return NextResponse.rewrite(url);
+  }
   const [first, second, ...rest] = pathname.split("/").filter(Boolean);
 
   if (!first || !isLocale(first)) {
@@ -69,6 +77,6 @@ function preferredLocale(request: NextRequest): Locale {
 }
 
 export const config = {
-  // Esclude file interni, file statici (con estensione) e pagine interne di revisione.
-  matcher: ["/((?!_next|api|design-system|wireframes|.*\\.[^/]+$).*)"],
+  // Esclude file interni e file statici (con estensione).
+  matcher: ["/((?!_next|api|.*\\.[^/]+$).*)"],
 };

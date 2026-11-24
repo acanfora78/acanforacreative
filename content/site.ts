@@ -1,6 +1,6 @@
 /**
  * Dati dello studio. Contatti approvati dal titolare il 24/11/2026.
- * Dominio: segnaposto finché non acquistato (regola in CLAUDE.md).
+ * Dominio: variabile d'ambiente SITE_URL (lib/site-url.ts), da impostare quando acquistato.
  */
 export const studio = {
   name: "ACANFORA CREATIVE",
@@ -16,8 +16,6 @@ export const studio = {
     address: "Via Lo Porto 111/D, 84018 Scafati (SA)",
     vat: "06367880652",
   },
-  // TODO: dominio da scegliere
-  domain: "[[DOMINIO — DA CONFERMARE]]",
 } as const;
 
 export function whatsappHref(text: string) {
