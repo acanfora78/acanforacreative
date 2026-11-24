@@ -37,4 +37,8 @@ Senza `RESEND_API_KEY` il modulo valida i dati e invita a scrivere per email o W
 - Cambio pagina e copertina condivisa griglia → case study: React `<ViewTransition>` in `components/motion/PageTransition.tsx`.
 - Con "riduci movimento" del sistema operativo tutto si spegne e i contenuti restano visibili.
 
-Stato: in sviluppo, non pubblicato.
+## Pubblicazione
+Guida, variabili d'ambiente e checklist di lancio: `docs/pubblicazione.md`.
+Dopo ogni `npm run build` parte `scripts/check-placeholders.mjs`: la build fallisce se nelle pagine pubbliche restano segnaposto `[[…]]`.
+
+Stato: pronto per Vercel, non pubblicato (in attesa di dominio e approvazione del titolare).
