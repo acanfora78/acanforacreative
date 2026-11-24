@@ -9,10 +9,11 @@ export const studio = {
   whatsapp: { number: "393290211669", display: "+39 329 021 1669" },
   instagram: { handle: "@acanforacreative", url: "https://www.instagram.com/acanforacreative/" },
   // Dati legali dal certificato di attribuzione P.IVA (Agenzia delle Entrate, 09/07/2025), approvati dal titolare.
-  // Il codice fiscale NON va pubblicato. Indirizzo: per scelta del titolare non va pubblicato (24/11/2026).
+  // Il codice fiscale NON va pubblicato. Indirizzo ripristinato su richiesta del titolare (24/11/2026).
   legal: {
     holder: "SMM di Acanfora Morgan",
     form: "Ditta individuale",
+    address: "Via Lo Porto 111/D, 84018 Scafati (SA)",
     vat: "06367880652",
   },
   // TODO: dominio da scegliere

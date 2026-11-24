@@ -54,7 +54,7 @@ export function Footer({ locale, t }: { locale: Locale; t: Dictionary }) {
 
       <div className="container-site flex flex-col gap-3 border-t border-line py-8 text-small text-muted md:flex-row md:items-center md:justify-between">
         <p>
-          © 2026 {studio.name} — {studio.legal.holder} · P.IVA {studio.legal.vat}
+          © 2026 {studio.name} — {studio.legal.holder} · {studio.legal.address} · P.IVA {studio.legal.vat}
         </p>
         <ul className="flex gap-6">
           <li>

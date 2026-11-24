@@ -17,6 +17,8 @@ function Holder() {
     <address className="not-italic">
       <strong>{studio.legal.holder}</strong> ({studio.legal.form}), {studio.name}
       <br />
+      {studio.legal.address}
+      <br />
       P.IVA {studio.legal.vat}
       <br />
       Email: <a href={`mailto:${studio.email}`}>{studio.email}</a>
