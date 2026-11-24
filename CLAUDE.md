@@ -17,8 +17,9 @@ Fonte autorevole delle decisioni: `docs/handoff/`. Stato e piano: `docs/`.
 - Oddscore: scommesse sportive. In Italia vige il divieto di pubblicità anche indiretta del gioco con vincita in denaro (art. 9 DL 87/2018). Non pubblicare marchio, link o riferimenti al gioco senza verifica legale.
 - Usare solo materiali reali forniti dal titolare.
 
-## Dati mancanti
-- Email, telefono/WhatsApp, dati legali, dominio: segnaposto evidenti `[[... — DA CONFERMARE]]`. Mai inventarli.
+## Dati dello studio
+- Approvati dal titolare (24/11/2026): Morgan Acanfora; email morganacanfora5@gmail.com; WhatsApp +39 329 021 1669; Instagram @acanforacreative. Fonte: `content/site.ts`.
+- Ancora mancanti: dati legali (titolare, sede, P.IVA) e dominio → segnaposto evidenti `[[... — DA CONFERMARE]]`. Mai inventarli.
 - Nessun deploy o pubblicazione senza approvazione esplicita del titolare.
 
 ## Metodo
