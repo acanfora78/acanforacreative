@@ -11,8 +11,9 @@ import Image from "next/image";
  * - "symbol-app":         04 — simbolo in quadrato nero arrotondato (avatar, favicon)
  * - "lockup-light":       05 — composizione orizzontale su fondo avorio
  *
- * Mancano nel master (da approvare se servono): versione negativa senza fondo
- * e lockup orizzontale negativo. Vedi docs/design-system.md.
+ * Varianti derivate (approvate, solo scambio dei due colori ufficiali; vedi brand/derived/):
+ * - "negative-transparent": 06 — logo avorio senza fondo, per fondi scuri
+ * - "lockup-dark":          07 — lockup orizzontale avorio su fondo nero
  */
 const variants = {
   "master-light": { src: "/brand/01_logo_master_avorio.svg", w: 1200, h: 760 },
@@ -20,6 +21,8 @@ const variants = {
   "master-dark": { src: "/brand/03_logo_master_fondo_nero.svg", w: 1200, h: 760 },
   "symbol-app": { src: "/brand/04_simbolo_instagram.svg", w: 800, h: 800 },
   "lockup-light": { src: "/brand/05_lockup_orizzontale.svg", w: 1400, h: 520 },
+  "negative-transparent": { src: "/brand/06_logo_negativo_trasparente.svg", w: 1200, h: 760 },
+  "lockup-dark": { src: "/brand/07_lockup_orizzontale_negativo.svg", w: 1400, h: 520 },
 } as const;
 
 export type LogoVariant = keyof typeof variants;
@@ -31,6 +34,8 @@ export const LOGO_MIN_WIDTH: Record<LogoVariant, number> = {
   "master-dark": 160,
   "symbol-app": 24,
   "lockup-light": 200,
+  "negative-transparent": 160,
+  "lockup-dark": 200,
 };
 
 export function Logo({

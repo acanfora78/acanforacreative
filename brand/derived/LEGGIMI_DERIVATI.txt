@@ -1,0 +1,13 @@
+ACANFORA CREATIVE — VARIANTI DERIVATE DAL MASTER
+
+Approvate dal titolare il 24/11/2026 (fase 2).
+Unica modifica rispetto al master: scambio dei due colori ufficiali
+(#111111 <-> #F7F4EC) e del titolo interno del file. Tracciati, proporzioni,
+spaziature e composizione sono identici al master.
+
+- 06_logo_negativo_trasparente.svg  <- da 02_logo_master_trasparente.svg
+  Logo avorio senza fondo, per fondi scuri.
+- 07_lockup_orizzontale_negativo.svg <- da 05_lockup_orizzontale.svg
+  Lockup orizzontale avorio su fondo nero #111111.
+
+Il master in ../logo-master/ resta la fonte autorevole.

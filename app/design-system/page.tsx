@@ -65,6 +65,8 @@ const logos: { variant: LogoVariant; file: string; bg: string; use: string }[] =
   { variant: "master-transparent", file: "02_logo_master_trasparente.svg", bg: "bg-avorio", use: "Senza fondo, solo su fondi chiari" },
   { variant: "lockup-light", file: "05_lockup_orizzontale.svg", bg: "bg-avorio", use: "Orizzontale, su fondo avorio" },
   { variant: "symbol-app", file: "04_simbolo_instagram.svg", bg: "bg-graphite", use: "Simbolo: avatar, favicon" },
+  { variant: "negative-transparent", file: "06_logo_negativo_trasparente.svg", bg: "bg-graphite", use: "Derivato: senza fondo, su fondi scuri" },
+  { variant: "lockup-dark", file: "07_lockup_orizzontale_negativo.svg", bg: "bg-nero", use: "Derivato: orizzontale su nero (intestazione)" },
 ];
 
 function Section({ n, title, intro, children, light = false }: { n: string; title: string; intro?: string; children: ReactNode; light?: boolean }) {
@@ -295,14 +297,10 @@ export default function DesignSystem() {
             </p>
           </div>
           <div>
-            <Label className="mb-4">Varianti mancanti nel master</Label>
-            <ul className="space-y-3 text-muted">
-              <li>— Logo negativo senza fondo (avorio su trasparente), per sfondi scuri diversi da #111111.</li>
-              <li>— Lockup orizzontale negativo, per l&apos;intestazione su fondo scuro.</li>
-            </ul>
-            <p className="mt-4 text-small text-muted">
-              Si possono ottenere scambiando solo i due colori ufficiali, senza altre modifiche. Serve la tua
-              approvazione prima di crearle.
+            <Label className="mb-4">Varianti derivate</Label>
+            <p className="text-muted">
+              06 e 07 sono ricavate dal master scambiando solo i due colori ufficiali: tracciati e composizione
+              identici. Approvate in fase 2; dettagli in <code>brand/derived/LEGGIMI_DERIVATI.txt</code>.
             </p>
           </div>
         </div>

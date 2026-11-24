@@ -63,8 +63,9 @@ Implementazione con GSAP in fase 7; gli stessi valori verranno usati nei timelin
 
 - Solo i file master (`public/brand/`), tramite il componente `Logo`. Nessun ridisegno o ricolorazione.
 - Larghezze minime: logo master 160 px, lockup 200 px, simbolo 24 px.
-- Favicon: `app/icon.svg` = simbolo 04. Da valutare a 16 px (estremità sottili).
-- **Varianti mancanti nel master** (servono per l'intestazione su fondo scuro): logo negativo senza fondo e lockup orizzontale negativo. Ottenibili scambiando solo i due colori ufficiali. **Da approvare.**
+- Favicon: `app/icon.svg` = simbolo 04.
+- **Varianti derivate** (approvate): `06_logo_negativo_trasparente.svg` e `07_lockup_orizzontale_negativo.svg` in `brand/derived/`, ottenute scambiando solo i due colori ufficiali.
+- Favicon a 16 px: approvata dal titolare.
 - Controlli ancora aperti dal LEGGIMI del master: kerning, spaziature ottiche, resa a 32–40 px, originalità del simbolo rispetto a marchi registrati.
 
 ## Componenti di base
