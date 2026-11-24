@@ -7,12 +7,13 @@ const base =
   "label inline-flex min-h-12 items-center justify-center gap-4 transition-[color,background-color,border-color] duration-[var(--dur-short)] ease-[var(--ease-quiet)]";
 
 const styles: Record<Variant, string> = {
+  // Motion system v2 (fase 9.5): riempimento che sale (300 ms), filetto che si ridisegna. Classi in globals.css.
   // Pieno: colore del testo come fondo (avorio su tema scuro, nero su tema chiaro)
-  primary: "bg-fg px-8 text-bg hover:bg-accent",
+  primary: "fx-fill bg-fg px-8 text-bg [--fill:var(--accent)]",
   // Contorno sottile
-  secondary: "border border-fg/40 px-8 text-fg hover:border-fg",
+  secondary: "fx-fill border border-fg/40 px-8 text-fg [--fill:var(--fg)] hover:border-fg hover:text-bg focus-visible:text-bg",
   // Link testuale con filetto
-  text: "min-h-11 border-b border-fg/40 pb-1 text-fg hover:border-fg",
+  text: "fx-line min-h-11 pb-1 text-fg",
 };
 
 type Props = {

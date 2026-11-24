@@ -46,7 +46,7 @@ export function Header({
               key={l.key}
               href={href(locale, l.key)}
               aria-current={current === l.key ? "page" : undefined}
-              className="label text-muted transition-colors hover:text-fg aria-[current=page]:text-fg"
+              className="fx-link label text-muted transition-colors hover:text-fg aria-[current=page]:text-fg"
             >
               {l.label}
             </Link>

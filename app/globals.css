@@ -281,6 +281,95 @@ body {
     transform-origin: bottom;
   }
 }
+/* ───────── Fase 9.5: motion system v2 — microinterazioni (solo CSS) ─────────
+ * Un solo motore per proprietà: queste classi animano solo pseudo-elementi e sfondi,
+ * mai le trasformazioni gestite da GSAP. Con "riduci movimento" le durate si azzerano (regola sopra).
+ */
+/* Pulsanti: riempimento che sale dal basso (300 ms). Colore in --fill. */
+.fx-fill {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.fx-fill::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--fill);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform var(--dur-short) var(--ease-quiet);
+}
+.fx-fill:hover::before,
+.fx-fill:focus-visible::before {
+  transform: scaleY(1);
+}
+/* Link testuali con filetto: al passaggio il filetto si cancella e si ridisegna. */
+.fx-line {
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 100% 1px;
+}
+.fx-line:hover,
+.fx-line:focus-visible {
+  animation: line-redraw var(--dur-medium) var(--ease-reveal);
+}
+@keyframes line-redraw {
+  0% { background-size: 100% 1px; background-position: 100% 100%; }
+  45% { background-size: 0 1px; background-position: 100% 100%; }
+  46% { background-size: 0 1px; background-position: 0 100%; }
+  100% { background-size: 100% 1px; background-position: 0 100%; }
+}
+/* Link di navigazione: il filetto si disegna da sinistra e si cancella verso destra. */
+.fx-link {
+  background: linear-gradient(currentColor, currentColor) no-repeat 100% 100% / 0 1px;
+  transition: background-size var(--dur-short) var(--ease-quiet), color var(--dur-short) var(--ease-quiet);
+}
+.fx-link:hover,
+.fx-link:focus-visible {
+  background-size: 100% 1px;
+  background-position: 0 100%;
+}
+/* Campi del modulo: la linea attiva si allunga da sinistra; l'errore entra dall'alto. */
+.fx-field {
+  background: linear-gradient(var(--fg), var(--fg)) no-repeat 0 100% / 0 1px;
+  transition: background-size var(--dur-medium) var(--ease-reveal), border-color var(--dur-short) var(--ease-quiet);
+}
+.fx-field:focus {
+  background-size: 100% 1px;
+}
+.fx-error {
+  animation: error-in var(--dur-short) var(--ease-reveal) both;
+}
+@keyframes error-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ───────── Fase 9.4: intro cinematica ─────────
+ * <html data-intro> viene impostato prima del primo disegno (script in app/[lang]/layout.tsx)
+ * solo all'arrivo diretto in home, una volta per sessione. Senza JavaScript non esiste.
+ */
+.intro-veil {
+  display: none;
+}
+html[data-intro="pending"] .intro-veil,
+html[data-intro="playing"] .intro-veil {
+  display: block;
+}
+html[data-intro="pending"],
+html[data-intro="playing"] {
+  overflow: hidden;
+}
+/* Con l'intro, l'apertura della Hero la fa GSAP: niente letterbox né aperture CSS (il titolo è già disegnato sotto il velo). */
+html[data-intro] .letterbox::before,
+html[data-intro] .letterbox::after {
+  display: none;
+}
+html[data-intro] .intro-line > span,
+html[data-intro] .intro-fade {
+  animation: none;
+}
+
 @keyframes intro-rise {
   from { transform: translateY(105%); }
   to { transform: none; }

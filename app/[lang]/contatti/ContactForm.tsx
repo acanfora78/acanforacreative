@@ -24,7 +24,7 @@ type FormText = {
 };
 
 const field =
-  "mt-2 w-full border-0 border-b border-line bg-transparent px-0 py-3 text-lead font-light text-fg placeholder:text-muted/60 focus:border-fg focus:outline-none aria-[invalid=true]:border-accent";
+  "fx-field mt-2 w-full border-0 border-b border-line bg-transparent px-0 py-3 text-lead font-light text-fg placeholder:text-muted/60 focus:border-fg focus:outline-none aria-[invalid=true]:border-accent";
 
 const noop = () => () => {};
 
@@ -40,7 +40,7 @@ function FieldLabel({ htmlFor, children, req, requiredText }: { htmlFor: string;
 
 function FieldError({ id, show, children }: { id: string; show?: true; children: string }) {
   return show ? (
-    <p id={id} className="mt-2 text-small text-accent">
+    <p id={id} className="fx-error mt-2 text-small text-accent">
       {children}
     </p>
   ) : null;

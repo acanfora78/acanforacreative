@@ -23,7 +23,7 @@ export function Footer({ locale, t }: { locale: Locale; t: Dictionary }) {
               ] as const
             ).map(([key, label]) => (
               <li key={key}>
-                <Link href={href(locale, key)} className="hover:text-accent">
+                <Link href={href(locale, key)} className="fx-link hover:text-accent">
                   {label}
                 </Link>
               </li>
@@ -34,17 +34,17 @@ export function Footer({ locale, t }: { locale: Locale; t: Dictionary }) {
           <p className="label mb-5 text-muted">{t.footer.contacts}</p>
           <ul className="space-y-2">
             <li>
-              <a href={mailHref(t.closing.emailSubject)} className="break-all hover:text-accent">
+              <a href={mailHref(t.closing.emailSubject)} className="fx-link break-all hover:text-accent">
                 {studio.email}
               </a>
             </li>
             <li>
-              <a href={whatsappHref(t.closing.whatsappMessage)} className="hover:text-accent">
+              <a href={whatsappHref(t.closing.whatsappMessage)} className="fx-link hover:text-accent">
                 WhatsApp {studio.whatsapp.display}
               </a>
             </li>
             <li>
-              <a href={studio.instagram.url} className="hover:text-accent">
+              <a href={studio.instagram.url} className="fx-link hover:text-accent">
                 Instagram {studio.instagram.handle}
               </a>
             </li>
@@ -58,12 +58,12 @@ export function Footer({ locale, t }: { locale: Locale; t: Dictionary }) {
         </p>
         <ul className="flex gap-6">
           <li>
-            <Link href={href(locale, "privacy")} className="hover:text-fg">
+            <Link href={href(locale, "privacy")} className="fx-link hover:text-fg">
               {t.footer.privacy}
             </Link>
           </li>
           <li>
-            <Link href={href(locale, "cookie")} className="hover:text-fg">
+            <Link href={href(locale, "cookie")} className="fx-link hover:text-fg">
               {t.footer.cookies}
             </Link>
           </li>

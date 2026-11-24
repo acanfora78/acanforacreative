@@ -6,6 +6,7 @@ import type { Dictionary } from "@/content/dictionaries";
 import type { Project } from "@/content/projects";
 import { mailHref, studio, whatsappHref } from "@/content/site";
 import { SharedCover } from "@/components/motion/PageTransition";
+import { HeroStage } from "@/components/home/HeroStage";
 import { href, type Locale } from "@/lib/i18n";
 
 /*
@@ -18,7 +19,8 @@ const pad = (n: number) => String(n).padStart(2, "0");
 export function Hero({ locale, t }: { locale: Locale; t: Dictionary }) {
   return (
     <section aria-labelledby="hero-title" className="letterbox theme-dark relative flex min-h-svh flex-col">
-      <div className="container-site flex flex-1 flex-col justify-end pt-32 pb-12 md:pt-40 md:pb-16">
+      <HeroStage skipLabel={t.hero.skipIntro} introLabel={t.hero.introLabel} />
+      <div className="container-site relative z-10 flex flex-1 flex-col justify-end pt-32 pb-12 md:pt-40 md:pb-16">
         <p className="intro-fade label mb-8 text-muted md:mb-12 [--d:0.5s]">{t.hero.eyebrow}</p>
         <h1 id="hero-title" className="font-display text-display-xl text-balance">
           {t.hero.titleLines.map((line, i) => (

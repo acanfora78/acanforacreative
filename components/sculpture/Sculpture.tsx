@@ -16,14 +16,30 @@ import type { SculptureEngine, Tier, View } from "./engine";
 
 export type SculptureTier = 0 | Tier;
 
-/** Sceglie il livello in base al dispositivo. */
+let cached: SculptureTier | undefined;
+
+/** Sceglie il livello in base al dispositivo (calcolato una volta per visita). */
 export function detectTier(): SculptureTier {
   if (typeof window === "undefined") return 0;
+  if (cached === undefined) cached = computeTier();
+  return cached;
+}
+
+function computeTier(): SculptureTier {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return 0;
   const nav = navigator as Navigator & { connection?: { saveData?: boolean }; deviceMemory?: number };
   if (nav.connection?.saveData) return 0;
   try {
-    if (!document.createElement("canvas").getContext("webgl2")) return 0;
+    const gl = document.createElement("canvas").getContext("webgl2");
+    if (!gl) return 0;
+    // Senza scheda grafica (rendering software) il 3D bloccherebbe la pagina: solo immagine.
+    const info = gl.getExtension("WEBGL_debug_renderer_info");
+    const renderer = info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)) : "";
+    gl.getExtension("WEBGL_lose_context")?.loseContext();
+    // Eccezione solo per i test automatici, che girano senza GPU.
+    let forced = false;
+    try { forced = localStorage.getItem("ac-sculpture-force") === "1"; } catch {}
+    if (!forced && /swiftshader|llvmpipe|softpipe|software|basic render/i.test(renderer)) return 0;
   } catch {
     return 0;
   }
@@ -53,14 +69,19 @@ type Props = {
 
 export function Sculpture({ poster, view = "tq", tier, still = false, interactive = true, onEngine, className = "", sizes = "100vw", preload = false }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
-  const canvas = useRef<HTMLCanvasElement>(null);
   const onEngineRef = useRef(onEngine);
   useEffect(() => { onEngineRef.current = onEngine; });
 
   useEffect(() => {
     const level = tier ?? detectTier();
-    const el = canvas.current, box = wrap.current;
-    if (level === 0 || !el || !box) return;
+    const box = wrap.current;
+    if (level === 0 || !box) return;
+    // Tela nuova a ogni avvio: con Cache Components la pagina nascosta resta nel DOM e
+    // una tela il cui contesto è stato liberato non si può riusare.
+    const el = document.createElement("canvas");
+    el.dataset.ready = "false";
+    el.className = "absolute inset-0 h-full w-full opacity-0 transition-opacity duration-700 data-[ready=true]:opacity-100";
+    box.appendChild(el);
 
     let engine: SculptureEngine | null = null;
     let cancelled = false;
@@ -99,18 +120,13 @@ export function Sculpture({ poster, view = "tq", tier, still = false, interactiv
       el.removeEventListener("webglcontextlost", onLost);
       onEngineRef.current?.(null);
       engine?.dispose();
-      el.dataset.ready = "false";
+      el.remove();
     };
   }, [tier, view, still, interactive]);
 
   return (
     <div ref={wrap} className={`relative [&:has(canvas[data-ready=true])>img]:opacity-0 ${className}`} aria-hidden="true">
       {poster && <Image src={poster} alt="" fill sizes={sizes} preload={preload} className="object-contain transition-opacity duration-700" />}
-      <canvas
-        ref={canvas}
-        data-ready="false"
-        className="absolute inset-0 h-full w-full opacity-0 transition-opacity duration-700 data-[ready=true]:opacity-100"
-      />
     </div>
   );
 }
