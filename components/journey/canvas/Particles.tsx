@@ -33,7 +33,8 @@ const ACCENT_DARK = new Color("#d6c29a"); // oro tenue, più luminoso per la luc
 const ACCENT_LIGHT = new Color("#7a6a4f"); // oro scuro, sulle scene crema
 
 /** side: lato del soggetto su schermi larghi (1 destra, -1 sinistra); scan: anello del capitolo 6 (0 = spento). */
-type State = { a: ShapeName; b: ShapeName; mix: number; opacity: number; cream: number; beacon: number; side: number; scan: number; scanY: number };
+/** lift: quanto il faro (capitolo 7) sale sopra il titolo, da 0 a 1. */
+type State = { a: ShapeName; b: ShapeName; mix: number; opacity: number; cream: number; beacon: number; side: number; scan: number; scanY: number; lift: number };
 
 /** Stato delle particelle come funzione pura dell'avanzamento: reversibile. */
 export function particleState(): State | null {
@@ -53,9 +54,10 @@ export function particleState(): State | null {
       side: 1,
       scan: 0,
       scanY: 0,
+      lift: 0,
     };
   }
-  const base = { beacon: 0, side: 1, scan: 0, scanY: 0 };
+  const base = { beacon: 0, side: 1, scan: 0, scanY: 0, lift: 0 };
   if (ch === 4) return { ...base, a: "network", b: "clapper", mix: ease.inOut(span(p, 0, 0.12)), opacity: 1 - span(p, 0.1, 0.2), cream: span(p, 0, 0.1) };
   if (ch === 5) {
     // Dal ciak (a destra) alla sagoma (a sinistra, dove c'era la foto), poi la scansione.
@@ -64,7 +66,7 @@ export function particleState(): State | null {
   }
   if (ch === 6) {
     const mix = ease.inOut(span(p, 0, 0.35));
-    return { ...base, a: "silhouette", b: "logo", mix, opacity: 1, cream: 0, beacon: span(p, 0.3, 0.6), side: -1 + 2 * mix };
+    return { ...base, a: "silhouette", b: "logo", mix, opacity: 1, cream: 0, beacon: span(p, 0.3, 0.6), side: -1 + 2 * mix, lift: mix };
   }
   return null;
 }
@@ -197,8 +199,10 @@ export function Particles() {
     u.uPx.value = (size.height * gl.getPixelRatio()) / (2 * Math.tan((FOV / 2) * (Math.PI / 180)));
     // Posizione del soggetto; rotazione lenta e cursore.
     const sub = subject(size.width / size.height);
-    pts.position.set((sub.wide ? sub.x * st.side : 0) + journey.pointer.x * 0.08 * st.beacon, sub.y - journey.pointer.y * 0.06 * st.beacon, 0);
-    pts.scale.setScalar(sub.s);
+    // Capitolo 7: il faro sale sopra il titolo e si rimpicciolisce, per non coprire il testo.
+    const lift = st.lift * (sub.wide ? 0.72 : 0.5);
+    pts.position.set((sub.wide ? sub.x * st.side : 0) + journey.pointer.x * 0.08 * st.beacon, sub.y + lift - journey.pointer.y * 0.06 * st.beacon, 0);
+    pts.scale.setScalar(sub.s * (1 - st.lift * (sub.wide ? 0.2 : 0.3)));
     pts.rotation.y = Math.sin(u.uTime.value * 0.25) * 0.22 + journey.pointer.x * (0.18 + st.beacon * 0.2);
     pts.rotation.x = -journey.pointer.y * (0.1 + st.beacon * 0.15);
   });

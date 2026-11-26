@@ -241,7 +241,7 @@ export function StudioTeaser({ locale, t }: { locale: Locale; t: Dictionary }) {
 export function Closing({ locale, t }: { locale: Locale; t: Dictionary }) {
   return (
     <section aria-labelledby="closing-title" className="theme-dark border-t border-line py-[var(--spacing-section)]">
-      <div className="container-site">
+      <div data-journey-copy className="container-site">
         <h2 id="closing-title" data-split className="font-display text-display-xl text-balance">
           {t.closing.titleLines.map((line, i) => (
             <span key={i} className={`block ${i > 0 ? "text-muted" : ""}`}>

@@ -479,6 +479,34 @@ html[data-journey-mode="3d"] [data-chapter="studio"] [data-studio-photo] {
   }
 }
 
+/* 7 — Contatto: testo in basso; l'ellisse del logo come un faro, la sua luce segue il cursore. */
+html[data-journey-mode="3d"] [data-chapter="contatto"] > section {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  border-top: 0;
+  padding-bottom: clamp(1.5rem, 6vh, 4rem);
+}
+html[data-journey-mode="3d"] [data-chapter="contatto"] > section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: calc(var(--beacon, 0) * 0.5);
+  background: radial-gradient(28rem circle at var(--bx, 70%) var(--by, 35%), rgb(214 194 154 / 0.18), transparent 70%);
+}
+html[data-journey-mode="3d"] [data-chapter="contatto"] h2 {
+  font-size: clamp(2.5rem, 9vh, var(--text-display-xl));
+}
+@media (max-width: 767px) {
+  html[data-journey-mode="3d"] [data-chapter="contatto"] h2 {
+    font-size: clamp(2.25rem, 6vh, var(--text-display-l));
+  }
+}
+html[data-journey-mode="3d"] [data-chapter="contatto"] .container-site {
+  position: relative;
+}
+
 @keyframes intro-rise {
   from { transform: translateY(105%); }
   to { transform: none; }

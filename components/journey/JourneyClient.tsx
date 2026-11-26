@@ -96,9 +96,13 @@ export function JourneyClient({ nav, labels, scene, projects, silhouette, childr
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
 
+    // Capitolo 7: la luce del faro segue il cursore anche sul testo (variabili CSS, nessun render React).
+    const beacon = el.querySelector<HTMLElement>('[data-chapter="contatto"] > section');
     const onPointer = (e: PointerEvent) => {
       journey.pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
       journey.pointer.y = (e.clientY / window.innerHeight) * 2 - 1;
+      beacon?.style.setProperty("--bx", `${e.clientX}px`);
+      beacon?.style.setProperty("--by", `${e.clientY}px`);
     };
     window.addEventListener("pointermove", onPointer, { passive: true });
     // Passaggio sul titolo del progetto attivo: distorsione leggera nella pellicola (capitolo 3).
@@ -128,10 +132,13 @@ export function JourneyClient({ nav, labels, scene, projects, silhouette, childr
           animation: tl,
           onUpdate: write,
           onRefresh: write,
+          // Puntino attivo: il capitolo il cui pin è in corso.
+          onToggle: (t) => t.isActive && setActive(i),
         });
       });
     });
-    trackActive();
+    // Capitoli non fissati (se ce ne sono): puntino attivo dalla posizione della sezione.
+    if (chapters.some((c) => !c.pin)) trackActive();
     document.fonts?.ready.then(() => ScrollTrigger.refresh());
     // Solo in sviluppo: espone l'avanzamento per i test automatici.
     if (process.env.NODE_ENV !== "production") Object.assign(window, { __journey: { journey, triggers: triggers.current } });
@@ -239,6 +246,13 @@ function chapterText(tl: gsap.core.Timeline, s: HTMLElement, id: string) {
   if (id === "studio") {
     const copy = s.querySelector("[data-journey-copy]");
     if (copy) tl.fromTo(copy, { autoAlpha: 0, y: 32 }, { autoAlpha: 1, y: 0, duration: 0.1 }, 0.2);
+  }
+  if (id === "contatto") {
+    // Il faro si accende (stesso intervallo di Particles: beacon 0,3–0,6) e illumina il titolo.
+    const section = s.querySelector("section");
+    const copy = s.querySelector("[data-journey-copy]");
+    if (copy) tl.fromTo(copy, { autoAlpha: 0, y: 32 }, { autoAlpha: 1, y: 0, duration: 0.15 }, 0.15);
+    if (section) tl.fromTo(section, { "--beacon": 0 }, { "--beacon": 1, duration: 0.3 }, 0.3);
   }
   if (id === "progetti") {
     // Intestazione, poi un progetto alla volta sincronizzato con la pellicola (vedi activeProject).

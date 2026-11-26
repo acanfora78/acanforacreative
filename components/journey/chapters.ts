@@ -19,7 +19,7 @@ export const chapters: Chapter[] = [
   { id: "servizi", vh: { desktop: 360, mobile: 220 }, pin: true, stage: true },
   { id: "metodo", vh: { desktop: 280, mobile: 170 }, pin: true, stage: true },
   { id: "studio", vh: { desktop: 200, mobile: 130 }, pin: true, stage: true },
-  { id: "contatto", vh: { desktop: 150, mobile: 100 }, pin: false, stage: false },
+  { id: "contatto", vh: { desktop: 150, mobile: 100 }, pin: true, stage: true },
 ];
 
 /** Ultimo capitolo con scena 3D: dopo la sua fine la tela smette di disegnare. */
