@@ -84,7 +84,7 @@ export function FilmStrip() {
 
   useFrame(() => {
     const [p1, p2] = journey.local;
-    const visible = p1 >= 1 && p2 > 0.13;
+    const visible = p1 >= 1 && p2 > 0.13 && p2 < 1;
     material.visible = visible;
     if (!visible) return;
     material.uniforms.uReveal.value = 0.04 + span(p2, 0.13, 0.42) * 1.04;

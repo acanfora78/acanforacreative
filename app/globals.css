@@ -367,6 +367,35 @@ html[data-journey="3d"] .journey-poster {
   opacity: 0;
 }
 
+/* Capitoli 3–7 in 3D: ogni sezione occupa lo schermo; la scena 3D sta dietro. */
+html[data-journey-mode="3d"] [data-pin] > section {
+  min-height: 100svh;
+}
+/* 3 — Progetti: intestazione in alto, un progetto alla volta in basso; le copertine le mostra la pellicola. */
+html[data-journey-mode="3d"] [data-chapter="progetti"] > section {
+  display: flex;
+  flex-direction: column;
+  padding-block: clamp(5rem, 12vh, 8rem) clamp(2rem, 6vh, 4rem);
+}
+html[data-journey-mode="3d"] [data-chapter="progetti"] > section > .container-site {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+html[data-journey-mode="3d"] [data-chapter="progetti"] ul {
+  position: relative;
+  flex: 1;
+  display: block;
+}
+html[data-journey-mode="3d"] [data-chapter="progetti"] li {
+  position: absolute;
+  inset: auto 0 0 0;
+  max-width: 36rem;
+}
+html[data-journey-mode="3d"] [data-chapter="progetti"] li [data-wipe] {
+  display: none;
+}
+
 @keyframes intro-rise {
   from { transform: translateY(105%); }
   to { transform: none; }

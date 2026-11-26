@@ -3,14 +3,18 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import { Color, type Mesh, type MeshBasicMaterial } from "three";
-import { ease, journey, lerp, span } from "../progress";
+import { lastStage } from "../chapters";
+import { subject, viewDist } from "../layout";
+import { currentChapter, ease, journey, lerp, span } from "../progress";
+import { stageFx } from "./fx";
+import { stripY } from "./ProjectReel";
 
 /*
  * Camera, colore di fondo e lampo di luce: tutto calcolato dall'avanzamento dei capitoli.
- * Capitolo 1 (obiettivo): la camera si avvicina, entra nell'anello, attraversa il tunnel di lenti,
- *   lampo, il fondo passa da nero a crema.
- * Capitolo 2 (manifesto): fondo crema, inquadratura sulla pellicola; alla fine zoom dentro un
- *   fotogramma, che porta al nero del capitolo 3.
+ * 1 Obiettivo: la camera entra nell'anello, attraversa il tunnel di lenti, lampo, nero → crema.
+ * 2 Manifesto: inquadratura sulla pellicola; alla fine zoom dentro un fotogramma (→ nero).
+ * 3 Progetti: la camera esce dal fotogramma e mostra la pellicola dei progetti.
+ * 4–7: camera fissa con un leggero parallasse; colori e scosse dai capitoli (vedi fx.ts).
  */
 export const COLORS = {
   nero: new Color("#111111"),
@@ -41,36 +45,48 @@ export function Rig() {
   }
 
   useFrame(() => {
-    const [p1, p2] = journey.local;
+    const ch = currentChapter();
+    const p = journey.local[ch];
     const aspect = size.width / size.height;
-    // Distanza che fa entrare la scena anche in verticale.
-    const dist = Math.max(5, 1.45 / (Math.tan((35 / 2) * (Math.PI / 180)) * aspect));
+    const dist = viewDist(aspect);
     const px = journey.pointer.x, py = journey.pointer.y;
+    let f = 0;
 
-    if (p1 < 1) {
-      // Capitolo 1
-      const approach = ease.inOut(span(p1, 0.1, 0.48));
-      const z = lerp(dist, -0.6, approach) - span(p1, 0.48, 1) * 0.8;
+    if (ch === 0) {
+      const approach = ease.inOut(span(p, 0.1, 0.48));
+      const z = lerp(dist, -0.6, approach) - span(p, 0.48, 1) * 0.8;
       camera.position.set(px * 0.08 * (1 - approach), -py * 0.05 * (1 - approach), z);
       camera.lookAt(0, 0, z - 5);
-      const f = span(p1, 0.8, 0.88) * (1 - span(p1, 0.88, 0.97));
-      bg.copy(p1 < 0.88 ? COLORS.nero : COLORS.crema);
-      setFlash(f);
-    } else {
-      // Capitolo 2
-      const zoom = ease.in(span(p2, 0.72, 1));
+      f = span(p, 0.8, 0.88) * (1 - span(p, 0.88, 0.97));
+      bg.copy(p < 0.88 ? COLORS.nero : COLORS.crema);
+    } else if (ch === 1) {
+      const zoom = ease.in(span(p, 0.72, 1));
       // Su schermi verticali la pellicola scende un po' di più, sotto il testo.
       const cy0 = aspect < 1 ? 0.45 : 0.22;
       const cx = lerp(0, FRAME_TARGET.x, zoom), cy = lerp(cy0, FRAME_TARGET.y, zoom);
       camera.position.set(cx + px * 0.05 * (1 - zoom), cy - py * 0.04 * (1 - zoom), lerp(dist * 0.9, FRAME_TARGET.z + 0.12, zoom));
       camera.lookAt(cx, cy, FRAME_TARGET.z - 1);
-      bg.copy(COLORS.crema).lerp(COLORS.nero, span(p2, 0.96, 1));
-      setFlash(0);
+      bg.copy(COLORS.crema).lerp(COLORS.nero, span(p, 0.96, 1));
+    } else if (ch === 2) {
+      // Esce dal primo fotogramma dei progetti fino all'inquadratura completa.
+      const sub = subject(aspect);
+      const out = ease.out(span(p, 0, 0.16));
+      const y = lerp(stripY(sub), 0, out);
+      camera.position.set(px * 0.05 * out, y - py * 0.04 * out, lerp(0.75, dist, out));
+      camera.lookAt(0, y, -1);
+      bg.copy(COLORS.nero);
+    } else {
+      const fx = stageFx(ch, p);
+      camera.position.set(px * 0.06 + fx.shake.x, -py * 0.04 + fx.shake.y, dist);
+      camera.lookAt(fx.shake.x * 0.5, fx.shake.y * 0.5, 0);
+      bg.copy(fx.from).lerp(fx.to, fx.mix);
+      f = fx.flash;
     }
+    setFlash(f);
     scene.background = bg;
 
-    // A scena finita (capitolo 3 e oltre, ancora senza 3D) la tela non disegna più.
-    const finished = p2 >= 1;
+    // Dopo l'ultimo capitolo con scena 3D la tela smette di disegnare.
+    const finished = journey.local[lastStage] >= 1;
     if (finished !== done.current) {
       done.current = finished;
       setFrameloop(finished ? "demand" : "always");

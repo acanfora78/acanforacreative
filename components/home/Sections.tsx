@@ -97,7 +97,7 @@ export function FeaturedWork({ locale, t, projects }: { locale: Locale; t: Dicti
   return (
     <section aria-labelledby="work-title" className="theme-dark py-[var(--spacing-section)]">
       <div className="container-site">
-        <div className="mb-12 flex flex-wrap items-end justify-between gap-6 md:mb-16">
+        <div data-journey-head className="mb-12 flex flex-wrap items-end justify-between gap-6 md:mb-16">
           <div>
             <Label className="mb-4">{t.work.label}</Label>
             <h2 id="work-title" data-split className="font-display text-display-l">

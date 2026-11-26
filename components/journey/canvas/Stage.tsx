@@ -8,6 +8,7 @@ import { journey } from "../progress";
 import { FilmStrip } from "./FilmStrip";
 import { Lenses } from "./Lenses";
 import { Post } from "./Post";
+import { ProjectReel } from "./ProjectReel";
 import { Ring } from "./Ring";
 import { Rig } from "./Rig";
 
@@ -43,6 +44,7 @@ export default function Stage() {
         <Ring />
         <Lenses />
         <FilmStrip />
+        <ProjectReel />
         {post && <Post />}
       </Canvas>
     </div>

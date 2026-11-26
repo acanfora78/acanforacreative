@@ -33,7 +33,10 @@ export function MotionScope({ children }: { children: ReactNode }) {
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         const scope = root.current;
         if (!scope) return;
-        const q = <T extends Element>(sel: string) => gsap.utils.toArray<T>(sel, scope);
+        // Home in 3D (fase 10): i capitoli fissati li anima il viaggio, non questa regia.
+        const journey3d = document.documentElement.dataset.journeyMode === "3d";
+        const q = <T extends Element>(sel: string) =>
+          gsap.utils.toArray<T>(sel, scope).filter((el) => !(journey3d && el.closest("[data-chapter][data-pin]")));
         const reveal = { duration: 1.1, ease: "expo.out" } as const;
 
         q<HTMLElement>("[data-split]").forEach((el) => {

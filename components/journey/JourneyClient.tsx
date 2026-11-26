@@ -6,10 +6,10 @@ import { SplitText } from "gsap/SplitText";
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { detectTier } from "@/components/sculpture/Sculpture";
 import { chapters } from "./chapters";
-import { journey } from "./progress";
+import { journey, type JourneyProject } from "./progress";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -26,22 +26,32 @@ type Mode = "pending" | "3d" | "static";
  *   sezioni normali con semplici entrate.
  * <html data-journey="3d|static"> guida il CSS (sfondi trasparenti solo quando la tela è pronta).
  */
-export function JourneyClient({ nav, labels, children }: { nav: string; labels: readonly string[]; children: ReactNode }) {
+type Props = { nav: string; labels: readonly string[]; projects: JourneyProject[]; children: ReactNode };
+
+export function JourneyClient({ nav, labels, projects, children }: Props) {
   const root = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<Mode>("pending");
   const [active, setActive] = useState(0);
   const lenisRef = useRef<Lenis | null>(null);
   const triggers = useRef<(ScrollTrigger | null)[]>([]);
 
-  useEffect(() => {
+  // Modalità decisa in un layout effect: arriva prima della regia di MotionScope (componente padre),
+  // che così non anima gli elementi dei capitoli guidati dalla scena 3D (un solo motore per proprietà).
+  useLayoutEffect(() => {
+    const root = document.documentElement;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const tier = detectTier();
     const next: Mode = reduced || tier === 0 ? "static" : "3d";
     journey.lite = tier === 1 || window.matchMedia("(max-width: 767px)").matches;
+    journey.projects = projects;
+    root.dataset.journeyMode = next;
+    if (next === "static") root.dataset.journey = "static";
     const id = requestAnimationFrame(() => setMode(next));
-    if (next === "static") document.documentElement.dataset.journey = "static";
-    return () => cancelAnimationFrame(id);
-  }, []);
+    return () => {
+      cancelAnimationFrame(id);
+      delete root.dataset.journeyMode;
+    };
+  }, [projects]);
 
   useEffect(() => {
     const el = root.current;
@@ -89,6 +99,11 @@ export function JourneyClient({ nav, labels, children }: { nav: string; labels: 
       journey.pointer.y = (e.clientY / window.innerHeight) * 2 - 1;
     };
     window.addEventListener("pointermove", onPointer, { passive: true });
+    // Passaggio sul titolo del progetto attivo: distorsione leggera nella pellicola (capitolo 3).
+    const hover = (v: number) => () => window.dispatchEvent(new CustomEvent("journey:hover", { detail: v }));
+    const links = [...el.querySelectorAll<HTMLElement>('[data-chapter="progetti"] li a')];
+    const on = hover(1), off = hover(0);
+    links.forEach((a) => { a.addEventListener("pointerenter", on); a.addEventListener("pointerleave", off); a.addEventListener("focus", on); a.addEventListener("blur", off); });
 
     ctx.add(() => {
       sections.forEach((s, i) => {
@@ -120,6 +135,7 @@ export function JourneyClient({ nav, labels, children }: { nav: string; labels: 
     if (process.env.NODE_ENV !== "production") Object.assign(window, { __journey: { journey, triggers: triggers.current } });
 
     return () => {
+      links.forEach((a) => { a.removeEventListener("pointerenter", on); a.removeEventListener("pointerleave", off); a.removeEventListener("focus", on); a.removeEventListener("blur", off); });
       window.removeEventListener("pointermove", onPointer);
       gsap.ticker.remove(tick);
       ctx.revert();
@@ -188,5 +204,20 @@ function chapterText(tl: gsap.core.Timeline, s: HTMLElement, id: string) {
       tl.to(p, { autoAlpha: 0, y: -40, duration: 0.1 }, 0.66);
     }
     if (label) tl.to(label, { autoAlpha: 0, duration: 0.08 }, 0.66);
+  }
+  if (id === "progetti") {
+    // Intestazione, poi un progetto alla volta sincronizzato con la pellicola (vedi activeProject).
+    const head = s.querySelector("[data-journey-head]");
+    const items = [...s.querySelectorAll<HTMLElement>("li")];
+    const n = items.length;
+    if (head) tl.fromTo(head, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.06 }, 0.06).to(head, { autoAlpha: 0, duration: 0.05 }, 0.8);
+    const seg = n > 1 ? 0.65 / (n - 1) : 0.65;
+    items.forEach((li, i) => {
+      const c = 0.15 + i * seg;
+      const start = i === 0 ? 0.1 : c - seg / 2;
+      const end = i === n - 1 ? 0.8 : c + seg / 2;
+      tl.fromTo(li, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.04 }, start);
+      tl.to(li, { autoAlpha: 0, y: -24, duration: 0.04 }, end - 0.04);
+    });
   }
 }

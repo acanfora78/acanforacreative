@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { Closing, FeaturedWork, Hero, Manifesto, Method, ServicesIndex, StudioTeaser } from "@/components/home/Sections";
+import { chapters } from "@/components/journey/chapters";
 import { JourneyClient } from "@/components/journey/JourneyClient";
 import { MotionScope } from "@/components/motion/MotionScope";
 import { PageTransition } from "@/components/motion/PageTransition";
@@ -16,6 +17,25 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
   if (!isLocale(lang)) notFound();
   const t = getDictionary(lang);
 
+  // Ogni sezione della home è un capitolo del viaggio (components/journey/chapters.ts).
+  const scenes: Record<string, React.ReactNode> = {
+    obiettivo: <Hero locale={lang} t={t} />,
+    manifesto: <Manifesto t={t} />,
+    progetti: <FeaturedWork locale={lang} t={t} projects={featuredProjects} />,
+    servizi: <ServicesIndex locale={lang} t={t} />,
+    metodo: <Method t={t} />,
+    studio: <StudioTeaser locale={lang} t={t} />,
+    contatto: <Closing locale={lang} t={t} />,
+  };
+  // Dati per la pellicola del capitolo 3: solo immagini reali (cover), altrimenti fotogramma tipografico.
+  const journeyProjects = featuredProjects.map((p) => ({
+    slug: p.slug,
+    name: p.name,
+    category: p.category[lang],
+    year: p.year,
+    cover: p.cover && !p.cover.src.endsWith(".svg") ? p.cover.src : undefined,
+  }));
+
   return (
     <>
       <Header locale={lang} t={t} current="home" />
@@ -23,28 +43,12 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         <main id="contenuto">
           <MotionScope>
             {/* Fase 10: un solo viaggio in zoom guidato dallo scroll. Ogni sezione è un capitolo. */}
-            <JourneyClient nav={t.journey.nav} labels={t.journey.chapters}>
-              <div data-chapter="obiettivo" data-stage>
-                <Hero locale={lang} t={t} />
-              </div>
-              <div data-chapter="manifesto" data-stage>
-                <Manifesto t={t} />
-              </div>
-              <div data-chapter="progetti">
-                <FeaturedWork locale={lang} t={t} projects={featuredProjects} />
-              </div>
-              <div data-chapter="servizi">
-                <ServicesIndex locale={lang} t={t} />
-              </div>
-              <div data-chapter="metodo">
-                <Method t={t} />
-              </div>
-              <div data-chapter="studio">
-                <StudioTeaser locale={lang} t={t} />
-              </div>
-              <div data-chapter="contatto">
-                <Closing locale={lang} t={t} />
-              </div>
+            <JourneyClient nav={t.journey.nav} labels={t.journey.chapters} projects={journeyProjects}>
+              {chapters.map((c) => (
+                <div key={c.id} data-chapter={c.id} data-pin={c.pin ? "" : undefined} data-stage={c.stage ? "" : undefined}>
+                  {scenes[c.id]}
+                </div>
+              ))}
             </JourneyClient>
           </MotionScope>
         </main>

@@ -15,7 +15,11 @@ export const journey = {
   pointer: { x: 0, y: 0 },
   /** Telefono o dispositivo modesto: scena semplificata. */
   lite: false,
+  /** Progetti in evidenza (capitolo 3): solo materiali reali. */
+  projects: [] as JourneyProject[],
 };
+
+export type JourneyProject = { slug: string; name: string; category: string; year: number; cover?: string };
 
 /** Capitolo corrente per la scena 3D: il primo non ancora completato. */
 export function currentChapter() {
