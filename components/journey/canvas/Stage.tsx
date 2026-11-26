@@ -8,6 +8,7 @@ import { journey } from "../progress";
 import { FilmStrip } from "./FilmStrip";
 import { Lenses } from "./Lenses";
 import { Clapper } from "./Clapper";
+import { Hologram } from "./Hologram";
 import { Particles } from "./Particles";
 import { Post } from "./Post";
 import { ProjectReel } from "./ProjectReel";
@@ -49,6 +50,7 @@ export default function Stage() {
           <ProjectReel />
           <Particles />
           <Clapper />
+          <Hologram />
           {post && <Post />}
         </PerformanceMonitor>
       </Canvas>

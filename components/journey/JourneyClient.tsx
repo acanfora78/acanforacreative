@@ -236,6 +236,10 @@ function chapterText(tl: gsap.core.Timeline, s: HTMLElement, id: string) {
       if (i < items.length - 1) tl.to(li, { opacity: 0.28, duration: 0.03 }, start + 0.2125 - 0.03);
     });
   }
+  if (id === "studio") {
+    const copy = s.querySelector("[data-journey-copy]");
+    if (copy) tl.fromTo(copy, { autoAlpha: 0, y: 32 }, { autoAlpha: 1, y: 0, duration: 0.1 }, 0.2);
+  }
   if (id === "progetti") {
     // Intestazione, poi un progetto alla volta sincronizzato con la pellicola (vedi activeProject).
     const head = s.querySelector("[data-journey-head]");

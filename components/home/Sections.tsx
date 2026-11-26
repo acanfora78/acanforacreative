@@ -207,7 +207,7 @@ export function StudioTeaser({ locale, t }: { locale: Locale; t: Dictionary }) {
   return (
     <section aria-labelledby="studio-title" className="theme-dark py-[var(--spacing-section)]">
       <div className="container-site grid-editorial items-center gap-y-12">
-        <div className="col-span-4 md:col-span-4 lg:col-span-5">
+        <div data-studio-photo className="col-span-4 md:col-span-4 lg:col-span-5">
           <div data-wipe className="relative aspect-[4/5] overflow-hidden border border-line">
             <Image
               src="/studio/morgan-acanfora.jpg"
@@ -218,7 +218,7 @@ export function StudioTeaser({ locale, t }: { locale: Locale; t: Dictionary }) {
             />
           </div>
         </div>
-        <div className="col-span-4 md:col-span-4 lg:col-span-6 lg:col-start-7">
+        <div data-journey-copy className="col-span-4 md:col-span-4 lg:col-span-6 lg:col-start-7">
           <Label className="mb-4">{t.studio.label}</Label>
           <h2 id="studio-title" data-split className="font-display text-display-l">
             {t.studio.title}

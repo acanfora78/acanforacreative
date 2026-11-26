@@ -461,6 +461,24 @@ html[data-journey-mode="3d"] [data-chapter="metodo"] h2 {
   }
 }
 
+/* 6 — Studio: l'ologramma prende il posto della foto (che resta nelle altre modalità). */
+html[data-journey-mode="3d"] [data-chapter="studio"] > section {
+  display: flex;
+  align-items: center;
+}
+html[data-journey-mode="3d"] [data-chapter="studio"] [data-studio-photo] {
+  visibility: hidden;
+}
+@media (max-width: 1023px) {
+  html[data-journey-mode="3d"] [data-chapter="studio"] [data-studio-photo] {
+    display: none;
+  }
+  html[data-journey-mode="3d"] [data-chapter="studio"] > section {
+    align-items: flex-end;
+    padding-bottom: clamp(1.5rem, 5vh, 3rem);
+  }
+}
+
 @keyframes intro-rise {
   from { transform: translateY(105%); }
   to { transform: none; }
