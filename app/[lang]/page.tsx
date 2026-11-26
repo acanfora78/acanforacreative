@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import { notFound } from "next/navigation";
 import { Closing, FeaturedWork, Hero, Manifesto, Method, ServicesIndex, StudioTeaser } from "@/components/home/Sections";
 import { chapters } from "@/components/journey/chapters";
@@ -36,6 +38,9 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
     cover: p.cover && !p.cover.src.endsWith(".svg") ? p.cover.src : undefined,
   }));
 
+  // Sagoma del capitolo 6: usata solo se il titolare ha fornito il file (niente richieste a vuoto).
+  const silhouette = existsSync(join(process.cwd(), "public/images/morgan-sagoma.png")) ? "/images/morgan-sagoma.png" : undefined;
+
   return (
     <>
       <Header locale={lang} t={t} current="home" />
@@ -43,7 +48,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         <main id="contenuto">
           <MotionScope>
             {/* Fase 10: un solo viaggio in zoom guidato dallo scroll. Ogni sezione è un capitolo. */}
-            <JourneyClient nav={t.journey.nav} labels={t.journey.chapters} projects={journeyProjects}>
+            <JourneyClient nav={t.journey.nav} labels={t.journey.chapters} projects={journeyProjects} silhouette={silhouette}>
               {chapters.map((c) => (
                 <div key={c.id} data-chapter={c.id} data-pin={c.pin ? "" : undefined} data-stage={c.stage ? "" : undefined}>
                   {scenes[c.id]}

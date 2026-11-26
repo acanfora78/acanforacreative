@@ -396,6 +396,42 @@ html[data-journey-mode="3d"] [data-chapter="progetti"] li [data-wipe] {
   display: none;
 }
 
+/* 4 — Servizi: elenco compatto a sinistra (in basso su telefono), le forme di particelle accanto. */
+html[data-journey-mode="3d"] [data-chapter="servizi"] > section {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-block: clamp(4rem, 9vh, 7rem) clamp(1.5rem, 4vh, 3rem);
+  border-top: 0;
+}
+html[data-journey-mode="3d"] [data-chapter="servizi"] [data-journey-head] {
+  margin-bottom: 1rem;
+}
+html[data-journey-mode="3d"] [data-chapter="servizi"] h2 {
+  font-size: clamp(2rem, 6vh, var(--text-display-l));
+}
+html[data-journey-mode="3d"] [data-chapter="servizi"] ol {
+  max-width: 34rem;
+}
+html[data-journey-mode="3d"] [data-chapter="servizi"] ol a {
+  display: block;
+  padding-block: clamp(0.25rem, 1vh, 0.6rem);
+}
+html[data-journey-mode="3d"] [data-chapter="servizi"] ol a > span {
+  display: inline;
+  margin-right: 1rem;
+}
+html[data-journey-mode="3d"] [data-chapter="servizi"] [data-service-text] {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: var(--text-small);
+}
+@media (max-width: 767px) {
+  html[data-journey-mode="3d"] [data-chapter="servizi"] [data-service-text] {
+    display: none;
+  }
+}
+
 @keyframes intro-rise {
   from { transform: translateY(105%); }
   to { transform: none; }

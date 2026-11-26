@@ -28,7 +28,7 @@ import { ease, journey, lerp, span } from "../progress";
  */
 export const TILE = { w: 1.6, h: 1.0 };
 /** Altezza della pellicola: sotto l'intestazione, sopra il progetto attivo. */
-export const stripY = (sub: { wide: boolean; y: number }) => (sub.wide ? 0.1 : sub.y * 0.55);
+export const stripY = (sub: { wide: boolean; y: number }) => (sub.wide ? 0.1 : sub.y * 0.41);
 const PAD = 2; // fotogrammi vuoti prima e dopo
 const CELL = { w: 1024, h: 640 };
 
@@ -180,7 +180,10 @@ export function ProjectReel() {
     const m = mesh.current;
     if (!m) return;
     const p = journey.local[2];
-    const on = journey.local[1] >= 1 && p < 1;
+    // Resta come bobina all'inizio del capitolo 4, mentre le particelle la sostituiscono.
+    const fadeOut = span(journey.local[3], 0, 0.06);
+    const on = journey.local[1] >= 1 && (p < 1 || fadeOut < 1);
+    material.uniforms.uAlpha.value = 1 - fadeOut;
     m.visible = on && material.uniforms.uMap.value !== null;
     if (!m.visible) return;
     const aspect = size.width / size.height;

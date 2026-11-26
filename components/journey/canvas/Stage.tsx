@@ -7,6 +7,7 @@ import { createStudioEnvironment } from "@/components/sculpture/studio";
 import { journey } from "../progress";
 import { FilmStrip } from "./FilmStrip";
 import { Lenses } from "./Lenses";
+import { Particles } from "./Particles";
 import { Post } from "./Post";
 import { ProjectReel } from "./ProjectReel";
 import { Ring } from "./Ring";
@@ -38,14 +39,16 @@ export default function Stage() {
         <PerformanceMonitor
           onDecline={() => { setDpr(1); setPost(false); }}
           onIncline={() => setDpr(1.5)}
-        />
-        <Studio />
-        <Rig />
-        <Ring />
-        <Lenses />
-        <FilmStrip />
-        <ProjectReel />
-        {post && <Post />}
+        >
+          <Studio />
+          <Rig />
+          <Ring />
+          <Lenses />
+          <FilmStrip />
+          <ProjectReel />
+          <Particles />
+          {post && <Post />}
+        </PerformanceMonitor>
       </Canvas>
     </div>
   );

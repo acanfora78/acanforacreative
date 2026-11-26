@@ -19,5 +19,5 @@ export function halfHeight(aspect: number) {
 /** Posizione e scala del soggetto per l'aspetto dello schermo. */
 export function subject(aspect: number) {
   const h = halfHeight(aspect);
-  return aspect > 1 ? { x: h * aspect * 0.42, y: 0.05, s: 0.95, wide: true } : { x: 0, y: h * 0.42, s: 0.9, wide: false };
+  return aspect > 1 ? { x: h * aspect * 0.42, y: 0.05, s: 0.95, wide: true } : { x: 0, y: h * 0.56, s: 0.8, wide: false };
 }

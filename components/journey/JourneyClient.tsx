@@ -26,9 +26,9 @@ type Mode = "pending" | "3d" | "static";
  *   sezioni normali con semplici entrate.
  * <html data-journey="3d|static"> guida il CSS (sfondi trasparenti solo quando la tela è pronta).
  */
-type Props = { nav: string; labels: readonly string[]; projects: JourneyProject[]; children: ReactNode };
+type Props = { nav: string; labels: readonly string[]; projects: JourneyProject[]; silhouette?: string; children: ReactNode };
 
-export function JourneyClient({ nav, labels, projects, children }: Props) {
+export function JourneyClient({ nav, labels, projects, silhouette, children }: Props) {
   const root = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<Mode>("pending");
   const [active, setActive] = useState(0);
@@ -44,6 +44,7 @@ export function JourneyClient({ nav, labels, projects, children }: Props) {
     const next: Mode = reduced || tier === 0 ? "static" : "3d";
     journey.lite = tier === 1 || window.matchMedia("(max-width: 767px)").matches;
     journey.projects = projects;
+    journey.silhouette = silhouette;
     root.dataset.journeyMode = next;
     if (next === "static") root.dataset.journey = "static";
     const id = requestAnimationFrame(() => setMode(next));
@@ -51,7 +52,7 @@ export function JourneyClient({ nav, labels, projects, children }: Props) {
       cancelAnimationFrame(id);
       delete root.dataset.journeyMode;
     };
-  }, [projects]);
+  }, [projects, silhouette]);
 
   useEffect(() => {
     const el = root.current;
@@ -204,6 +205,23 @@ function chapterText(tl: gsap.core.Timeline, s: HTMLElement, id: string) {
       tl.to(p, { autoAlpha: 0, y: -40, duration: 0.1 }, 0.66);
     }
     if (label) tl.to(label, { autoAlpha: 0, duration: 0.08 }, 0.66);
+  }
+  if (id === "servizi") {
+    // Un servizio alla volta in evidenza, sincronizzato con le forme (vedi activeService).
+    const head = s.querySelector("[data-journey-head]");
+    const items = [...s.querySelectorAll<HTMLElement>("ol > li")];
+    if (head) tl.fromTo(head, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.05 }, 0.02);
+    const seg = 0.96 / items.length;
+    items.forEach((li, i) => {
+      const start = 0.04 + i * seg;
+      tl.fromTo(li, { opacity: 0.28 }, { opacity: 1, duration: 0.03 }, Math.max(0.02, start));
+      const text = li.querySelector("[data-service-text]");
+      if (text) tl.fromTo(text, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.03 }, Math.max(0.02, start));
+      if (i < items.length - 1) {
+        tl.to(li, { opacity: 0.28, duration: 0.03 }, start + seg - 0.03);
+        if (text) tl.to(text, { autoAlpha: 0, duration: 0.03 }, start + seg - 0.03);
+      }
+    });
   }
   if (id === "progetti") {
     // Intestazione, poi un progetto alla volta sincronizzato con la pellicola (vedi activeProject).

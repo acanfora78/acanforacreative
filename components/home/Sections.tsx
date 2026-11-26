@@ -146,7 +146,7 @@ export function ServicesIndex({ locale, t }: { locale: Locale; t: Dictionary }) 
   return (
     <section aria-labelledby="services-title" className="theme-dark border-t border-line py-[var(--spacing-section)]">
       <div className="container-site">
-        <div className="mb-12 flex flex-wrap items-end justify-between gap-6 md:mb-16">
+        <div data-journey-head className="mb-12 flex flex-wrap items-end justify-between gap-6 md:mb-16">
           <div>
             <Label className="mb-4">{t.services.label}</Label>
             <h2 id="services-title" data-split className="font-display text-display-l">
@@ -168,7 +168,7 @@ export function ServicesIndex({ locale, t }: { locale: Locale; t: Dictionary }) 
                 <span className="font-display text-heading transition-colors group-hover:text-accent md:col-span-6">
                   {s.name}
                 </span>
-                <span className="text-muted md:col-span-5">{s.text}</span>
+                <span data-service-text className="text-muted md:col-span-5">{s.text}</span>
               </Link>
             </li>
           ))}
