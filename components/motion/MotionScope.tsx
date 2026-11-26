@@ -84,7 +84,10 @@ export function MotionScope({ children }: { children: ReactNode }) {
         // Fase 9.5: passaggio nero ↔ avorio. Una sezione che cambia tema rispetto alla precedente
         // parte dal colore di quella e arriva al suo mentre entra nello schermo.
         q<HTMLElement>(".theme-light, .theme-dark").forEach((el) => {
-          const prev = el.previousElementSibling;
+          // In home le sezioni sono dentro i contenitori dei capitoli (fase 10): si guarda il capitolo precedente.
+          const chapter = el.parentElement?.hasAttribute("data-chapter") ? el.parentElement : null;
+          if (chapter?.hasAttribute("data-stage")) return; // sfondo gestito dalla scena 3D
+          const prev = chapter ? chapter.previousElementSibling?.firstElementChild : el.previousElementSibling;
           if (!prev) return;
           const light = el.classList.contains("theme-light");
           if (!prev.classList.contains(light ? "theme-dark" : "theme-light")) return;

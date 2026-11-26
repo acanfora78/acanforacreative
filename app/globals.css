@@ -345,29 +345,26 @@ body {
   to { opacity: 1; transform: none; }
 }
 
-/* ───────── Fase 9.4: intro cinematica ─────────
- * <html data-intro> viene impostato prima del primo disegno (script in app/[lang]/layout.tsx)
- * solo all'arrivo diretto in home, una volta per sessione. Senza JavaScript non esiste.
+/* ───────── Fase 10: viaggio in home ─────────
+ * <html data-journey="3d">: la tela 3D è pronta; i capitoli-scena diventano trasparenti
+ * e l'immagine statica del capitolo 1 sparisce. "static" o assente: sezioni normali.
  */
-.intro-veil {
-  display: none;
+html[data-journey="3d"] [data-stage] > section {
+  background-color: transparent;
 }
-html[data-intro="pending"] .intro-veil,
-html[data-intro="playing"] .intro-veil {
-  display: block;
+/* Manifesto: il testo sta nella metà alta, la pellicola in basso. */
+html[data-journey="3d"] [data-chapter="manifesto"] > section {
+  padding-top: clamp(5rem, 14vh, 9rem);
 }
-html[data-intro="pending"],
-html[data-intro="playing"] {
-  overflow: hidden;
+/* Su schermi bassi il testo si riduce con l'altezza (mai sotto 32 px, regola del Didot). */
+html[data-journey="3d"] [data-chapter="manifesto"] [data-journey-lines] {
+  font-size: clamp(2rem, 5vh, var(--text-display-m));
 }
-/* Con l'intro, l'apertura della Hero la fa GSAP: niente letterbox né aperture CSS (il titolo è già disegnato sotto il velo). */
-html[data-intro] .letterbox::before,
-html[data-intro] .letterbox::after {
-  display: none;
+.journey-poster {
+  transition: opacity var(--dur-long) var(--ease-reveal);
 }
-html[data-intro] .intro-line > span,
-html[data-intro] .intro-fade {
-  animation: none;
+html[data-journey="3d"] .journey-poster {
+  opacity: 0;
 }
 
 @keyframes intro-rise {

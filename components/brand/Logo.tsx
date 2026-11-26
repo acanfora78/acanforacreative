@@ -60,6 +60,8 @@ export function Logo({
       width={width}
       height={Math.round((width * v.h) / v.w)}
       preload={preload}
+      // Il logo dell'intestazione è spesso l'elemento più grande al primo disegno (LCP): priorità alta.
+      fetchPriority={preload ? "high" : undefined}
       className={className}
     />
   );
