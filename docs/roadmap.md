@@ -13,7 +13,7 @@ Ogni fase si chiude con una revisione e un'approvazione del titolare. Branch ded
 | 7 | Animazioni e interazioni (GSAP, transizioni di pagina) | approvata |
 | 8 | SEO, performance, accessibilità, QA | approvata — vedi `docs/pubblicazione.md` |
 | 9 | Scultura 3D master, intro cinematica, motion system v2 (concept C "Lama") | fatta, da provare su dispositivi reali — vedi `docs/scultura-3d.md` |
-| 10 | Home come viaggio in zoom "dall'obiettivo alla scena" (7 capitoli) | prototipo capitoli 1–2 in revisione — vedi `docs/viaggio.md` |
+| 10 | Home come viaggio in zoom "dall'obiettivo alla scena" (7 capitoli) | 7 capitoli fatti, in revisione; da provare su dispositivi reali — vedi `docs/viaggio.md` |
 
 ## Architettura approvata (fase 1)
 - Next.js 16 App Router, TypeScript strict, Tailwind CSS 4, componenti server di default.

@@ -21,6 +21,8 @@ export const journey = {
   silhouette: undefined as string | undefined,
   /** Parola sulla lavagna del ciak (capitolo 5), nella lingua della pagina. */
   sceneLabel: "SCENA",
+  /** Chiamata a ogni cambio di avanzamento: risveglia la tela quando è ferma (fine del viaggio). */
+  onChange: null as null | (() => void),
 };
 
 export type JourneyProject = { slug: string; name: string; category: string; year: number; cover?: string };

@@ -15,6 +15,18 @@ import { href, type Locale } from "@/lib/i18n";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
+/**
+ * Immagine statica del capitolo (fase 10), resa dalla scena 3D: si vede senza 3D
+ * ("riduci movimento", dispositivi senza GPU, senza JavaScript); con il 3D attivo è nascosta.
+ */
+function ChapterStill({ src, width, height }: { src: string; width: number; height: number }) {
+  return (
+    <div className="chapter-still mb-10 ml-auto w-40 md:w-56" aria-hidden="true">
+      <Image src={src} alt="" width={width} height={height} sizes="(min-width: 768px) 14rem, 10rem" className="h-auto w-full" />
+    </div>
+  );
+}
+
 export function Hero({ locale, t }: { locale: Locale; t: Dictionary }) {
   return (
     <section aria-labelledby="hero-title" className="letterbox theme-dark relative flex min-h-svh flex-col">
@@ -182,6 +194,7 @@ export function Method({ t }: { t: Dictionary }) {
   return (
     <section aria-labelledby="method-title" className="theme-light py-[var(--spacing-section)]">
       <div className="container-site">
+        <ChapterStill src="/journey/metodo.avif" width={720} height={624} />
         <div data-journey-head>
           <Label className="mb-4">{t.method.label}</Label>
           <h2 id="method-title" data-split className="font-display mb-12 text-display-l md:mb-20">
@@ -242,6 +255,7 @@ export function Closing({ locale, t }: { locale: Locale; t: Dictionary }) {
   return (
     <section aria-labelledby="closing-title" className="theme-dark border-t border-line py-[var(--spacing-section)]">
       <div data-journey-copy className="container-site">
+        <ChapterStill src="/journey/contatto.avif" width={900} height={655} />
         <h2 id="closing-title" data-split className="font-display text-display-xl text-balance">
           {t.closing.titleLines.map((line, i) => (
             <span key={i} className={`block ${i > 0 ? "text-muted" : ""}`}>

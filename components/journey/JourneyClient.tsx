@@ -116,7 +116,10 @@ export function JourneyClient({ nav, labels, scene, projects, silhouette, childr
         const c = chapters[i];
         if (!s) return;
         const vh = journey.lite ? c.vh.mobile : c.vh.desktop;
-        const write = (t: ScrollTrigger) => { journey.local[i] = t.progress; };
+        const write = (t: ScrollTrigger) => {
+          journey.local[i] = t.progress;
+          journey.onChange?.();
+        };
         if (!c.pin) {
           triggers.current[i] = ScrollTrigger.create({ trigger: s, start: "top bottom", end: "bottom top", onUpdate: write, onRefresh: write });
           return;

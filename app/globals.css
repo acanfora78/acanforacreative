@@ -367,6 +367,9 @@ html[data-journey="3d"] .journey-poster {
   opacity: 0;
 }
 
+html[data-journey-mode="3d"] .chapter-still {
+  display: none;
+}
 /* Capitoli 3–7 in 3D: ogni sezione occupa lo schermo; la scena 3D sta dietro. */
 html[data-journey-mode="3d"] [data-pin] > section {
   min-height: 100svh;

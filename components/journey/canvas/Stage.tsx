@@ -43,6 +43,7 @@ export default function Stage() {
           onIncline={() => setDpr(1.5)}
         >
           <Studio />
+          <Wake />
           <Rig />
           <Ring />
           <Lenses />
@@ -56,6 +57,16 @@ export default function Stage() {
       </Canvas>
     </div>
   );
+}
+
+/** Dopo la fine del viaggio la tela disegna solo su richiesta: lo scroll la risveglia. */
+function Wake() {
+  const invalidate = useThree((s) => s.invalidate);
+  useEffect(() => {
+    journey.onChange = () => invalidate();
+    return () => { journey.onChange = null; };
+  }, [invalidate]);
+  return null;
 }
 
 /** Ambiente di riflessi: lo studio procedurale della scultura (nessun HDRI da scaricare). */
