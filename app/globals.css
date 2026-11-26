@@ -432,6 +432,35 @@ html[data-journey-mode="3d"] [data-chapter="servizi"] [data-service-text] {
   }
 }
 
+/* 5 — Metodo: il ciak in alto a destra (in alto su telefono), i quattro passi in basso. */
+html[data-journey-mode="3d"] [data-chapter="metodo"] > section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-block: clamp(4rem, 9vh, 7rem) clamp(1.5rem, 5vh, 3rem);
+}
+html[data-journey-mode="3d"] [data-chapter="metodo"] > section > .container-site {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+}
+html[data-journey-mode="3d"] [data-chapter="metodo"] h2 {
+  margin-bottom: 0;
+}
+@media (max-width: 767px) {
+  html[data-journey-mode="3d"] [data-chapter="metodo"] [data-journey-head] {
+    margin-top: 38vh;
+  }
+  html[data-journey-mode="3d"] [data-chapter="metodo"] ol {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+  html[data-journey-mode="3d"] [data-chapter="metodo"] [data-step-text] {
+    display: none;
+  }
+}
+
 @keyframes intro-rise {
   from { transform: translateY(105%); }
   to { transform: none; }

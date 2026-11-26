@@ -17,7 +17,7 @@ export const chapters: Chapter[] = [
   { id: "manifesto", vh: { desktop: 260, mobile: 170 }, pin: true, stage: true },
   { id: "progetti", vh: { desktop: 320, mobile: 220 }, pin: true, stage: true },
   { id: "servizi", vh: { desktop: 360, mobile: 220 }, pin: true, stage: true },
-  { id: "metodo", vh: { desktop: 280, mobile: 170 }, pin: false, stage: false },
+  { id: "metodo", vh: { desktop: 280, mobile: 170 }, pin: true, stage: true },
   { id: "studio", vh: { desktop: 200, mobile: 130 }, pin: false, stage: false },
   { id: "contatto", vh: { desktop: 150, mobile: 100 }, pin: false, stage: false },
 ];

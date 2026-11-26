@@ -182,17 +182,19 @@ export function Method({ t }: { t: Dictionary }) {
   return (
     <section aria-labelledby="method-title" className="theme-light py-[var(--spacing-section)]">
       <div className="container-site">
-        <Label className="mb-4">{t.method.label}</Label>
-        <h2 id="method-title" data-split className="font-display mb-12 text-display-l md:mb-20">
-          {t.method.title}
-        </h2>
+        <div data-journey-head>
+          <Label className="mb-4">{t.method.label}</Label>
+          <h2 id="method-title" data-split className="font-display mb-12 text-display-l md:mb-20">
+            {t.method.title}
+          </h2>
+        </div>
         <ol data-stagger className="grid gap-12 md:grid-cols-2 lg:grid-cols-4 lg:gap-[var(--spacing-gutter)]">
           {t.method.steps.map((s, i) => (
             <li key={s.name} className="relative pt-6">
               <span aria-hidden="true" data-draw className="absolute inset-x-0 top-0 h-px bg-fg" />
               <p className="label text-muted">{pad(i + 1)}</p>
               <h3 className="font-display mt-6 text-heading">{s.name}</h3>
-              <p className="mt-3 text-muted">{s.text}</p>
+              <p data-step-text className="mt-3 text-muted">{s.text}</p>
             </li>
           ))}
         </ol>

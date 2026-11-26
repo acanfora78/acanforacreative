@@ -26,6 +26,7 @@ export const en = {
     scroll: "Scroll",
   },
   journey: {
+    scene: "SCENE",
     nav: "Chapters",
     chapters: ["Lens", "Manifesto", "Work", "Services", "Method", "Studio", "Contact"],
   },

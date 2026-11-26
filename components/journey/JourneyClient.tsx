@@ -26,9 +26,9 @@ type Mode = "pending" | "3d" | "static";
  *   sezioni normali con semplici entrate.
  * <html data-journey="3d|static"> guida il CSS (sfondi trasparenti solo quando la tela è pronta).
  */
-type Props = { nav: string; labels: readonly string[]; projects: JourneyProject[]; silhouette?: string; children: ReactNode };
+type Props = { nav: string; labels: readonly string[]; scene: string; projects: JourneyProject[]; silhouette?: string; children: ReactNode };
 
-export function JourneyClient({ nav, labels, projects, silhouette, children }: Props) {
+export function JourneyClient({ nav, labels, scene, projects, silhouette, children }: Props) {
   const root = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<Mode>("pending");
   const [active, setActive] = useState(0);
@@ -45,6 +45,7 @@ export function JourneyClient({ nav, labels, projects, silhouette, children }: P
     journey.lite = tier === 1 || window.matchMedia("(max-width: 767px)").matches;
     journey.projects = projects;
     journey.silhouette = silhouette;
+    journey.sceneLabel = scene;
     root.dataset.journeyMode = next;
     if (next === "static") root.dataset.journey = "static";
     const id = requestAnimationFrame(() => setMode(next));
@@ -52,7 +53,7 @@ export function JourneyClient({ nav, labels, projects, silhouette, children }: P
       cancelAnimationFrame(id);
       delete root.dataset.journeyMode;
     };
-  }, [projects, silhouette]);
+  }, [projects, silhouette, scene]);
 
   useEffect(() => {
     const el = root.current;
@@ -221,6 +222,18 @@ function chapterText(tl: gsap.core.Timeline, s: HTMLElement, id: string) {
         tl.to(li, { opacity: 0.28, duration: 0.03 }, start + seg - 0.03);
         if (text) tl.to(text, { autoAlpha: 0, duration: 0.03 }, start + seg - 0.03);
       }
+    });
+  }
+  if (id === "metodo") {
+    // Il ciak arriva (0,1–0,2), poi un passo alla volta: il passo attivo coincide con la scena sulla lavagna.
+    s.querySelectorAll("[data-journey-head]").forEach((h) => tl.fromTo(h, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.05 }, 0.1));
+    const items = [...s.querySelectorAll<HTMLElement>("ol > li")];
+    items.forEach((li, i) => {
+      const start = 0.15 + i * 0.2125;
+      tl.fromTo(li, { opacity: 0.28 }, { opacity: 1, duration: 0.03 }, start);
+      const text = li.querySelector("[data-step-text]");
+      if (text) tl.fromTo(text, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.03 }, start);
+      if (i < items.length - 1) tl.to(li, { opacity: 0.28, duration: 0.03 }, start + 0.2125 - 0.03);
     });
   }
   if (id === "progetti") {

@@ -173,7 +173,7 @@ export function Particles() {
     u.uBeacon.value = st.beacon;
     u.uTime.value += Math.min(dt, 0.1);
     u.uColor.value.copy(ACCENT_DARK).lerp(ACCENT_LIGHT, st.cream);
-    const blending = st.cream > 0.5 ? NormalBlending : AdditiveBlending;
+    const blending = st.cream > 0.25 ? NormalBlending : AdditiveBlending;
     if (material.blending !== blending) material.blending = blending;
     u.uPx.value = (size.height * gl.getPixelRatio()) / (2 * Math.tan((FOV / 2) * (Math.PI / 180)));
     // Posizione del soggetto; rotazione lenta e cursore.

@@ -19,6 +19,8 @@ export const journey = {
   projects: [] as JourneyProject[],
   /** Sagoma del capitolo 6, se il file esiste (altrimenti segnaposto procedurale). */
   silhouette: undefined as string | undefined,
+  /** Parola sulla lavagna del ciak (capitolo 5), nella lingua della pagina. */
+  sceneLabel: "SCENA",
 };
 
 export type JourneyProject = { slug: string; name: string; category: string; year: number; cover?: string };

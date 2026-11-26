@@ -7,6 +7,7 @@ import { createStudioEnvironment } from "@/components/sculpture/studio";
 import { journey } from "../progress";
 import { FilmStrip } from "./FilmStrip";
 import { Lenses } from "./Lenses";
+import { Clapper } from "./Clapper";
 import { Particles } from "./Particles";
 import { Post } from "./Post";
 import { ProjectReel } from "./ProjectReel";
@@ -47,6 +48,7 @@ export default function Stage() {
           <FilmStrip />
           <ProjectReel />
           <Particles />
+          <Clapper />
           {post && <Post />}
         </PerformanceMonitor>
       </Canvas>

@@ -48,7 +48,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         <main id="contenuto">
           <MotionScope>
             {/* Fase 10: un solo viaggio in zoom guidato dallo scroll. Ogni sezione è un capitolo. */}
-            <JourneyClient nav={t.journey.nav} labels={t.journey.chapters} projects={journeyProjects} silhouette={silhouette}>
+            <JourneyClient nav={t.journey.nav} labels={t.journey.chapters} scene={t.journey.scene} projects={journeyProjects} silhouette={silhouette}>
               {chapters.map((c) => (
                 <div key={c.id} data-chapter={c.id} data-pin={c.pin ? "" : undefined} data-stage={c.stage ? "" : undefined}>
                   {scenes[c.id]}
