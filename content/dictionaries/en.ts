@@ -25,11 +25,6 @@ export const en = {
     secondary: "See the work",
     scroll: "Scroll",
   },
-  journey: {
-    scene: "SCENE",
-    nav: "Chapters",
-    chapters: ["Lens", "Manifesto", "Work", "Services", "Method", "Studio", "Contact"],
-  },
   manifesto: {
     label: "Manifesto",
     text: "A strong image is never an accident. It comes from a clear story, precise choices and details refined one by one. We work like a film set: every frame has a reason.",
