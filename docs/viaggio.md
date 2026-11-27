@@ -82,6 +82,14 @@ Segnalazione del titolare: animazioni lente e blocchi. Misure con traccia del br
 | Avvio della tela 3D | durante il caricamento | quando il browser è libero (requestIdleCallback) | primo disegno non conteso |
 | Risoluzione | fino a 1,5× anche su schermi Retina | 1,25× su schermi ad alta densità; bloom a mezza risoluzione | — |
 
+## Prestazioni, seconda analisi (27/11/2026)
+Traccia completa del browser durante lo scroll (thread principale e GPU):
+- **Causa trovata:** Three.js verifica ogni shader solo al primo disegno; quella verifica (`GetProgramiv` + `Finish`) ferma la pagina finché la scheda grafica non ha finito. Avveniva a metà scroll, all'arrivo di ogni scena.
+- **Correzione:** il riscaldamento (`Warmup` in `Stage.tsx`) compila la variante giusta degli shader (quella per il postprocessing, più quella a schermo) e ne forza subito la verifica, un oggetto per fotogramma, mentre si è sulla Hero.
+- **Risultato:** durante lo scroll, task oltre 50 ms da 6 a 0; il più lungo da 189 a 31 ms; thread principale occupato il 10% del tempo.
+- **Rete di sicurezza:** se anche a qualità ridotta gli fps restano sotto 24 per 4 secondi, la tela si spegne e il sito continua senza 3D (stessi capitoli e testi, fondi normali, nessun salto).
+- **Diagnostica:** aggiungere `?debug=1` all'indirizzo (es. `/it?debug=1`): pannello con fps, scheda grafica, risoluzione, postprocessing, qualità.
+
 ## Asset da fornire
 - `public/images/morgan-sagoma.png`: figura su sfondo trasparente, mezzo busto, almeno 1000 px di altezza (capitolo 6).
 - `public/models/ciak.glb` (facoltativo): sotto i 300 KB, stecca come nodo separato con il perno sulla cerniera (capitolo 5). Senza, ciak procedurale.

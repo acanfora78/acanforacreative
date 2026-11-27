@@ -23,6 +23,10 @@ export const journey = {
   sceneLabel: "SCENA",
   /** Chiamata a ogni cambio di avanzamento: risveglia la tela quando è ferma (fine del viaggio). */
   onChange: null as null | (() => void),
+  /** Ultima risorsa: la tela 3D si spegne (fps troppo bassi anche a qualità ridotta). */
+  onGiveUp: null as null | (() => void),
+  /** Diagnostica (?debug=1): fps misurati e stato della qualità. */
+  stats: { fps: 0, gpu: "", dpr: 0, post: false, reduced: false },
 };
 
 export type JourneyProject = { slug: string; name: string; category: string; year: number; cover?: string };
