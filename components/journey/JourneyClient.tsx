@@ -173,7 +173,23 @@ export function JourneyClient({ nav, labels, scene, projects, silhouette, childr
   }, [mode]);
 
   // Elemento della tela memorizzato: il cambio di capitolo (puntini) non ridisegna l'albero 3D.
-  const stage = useMemo(() => (mode === "3d" ? <Stage /> : null), [mode]);
+  const [gaveUp, setGaveUp] = useState(false);
+  const stage = useMemo(() => (mode === "3d" && !gaveUp ? <Stage /> : null), [mode, gaveUp]);
+  // Ultima difesa (vedi Guard in Stage.tsx): via la tela, sezioni con i fondi normali; pin e testi restano.
+  useEffect(() => {
+    journey.onGiveUp = () => {
+      document.documentElement.dataset.journey = "static";
+      setGaveUp(true);
+    };
+    return () => { journey.onGiveUp = null; };
+  }, []);
+  // Diagnostica: aggiungere ?debug=1 all'indirizzo.
+  const [debug, setDebug] = useState(false);
+  useEffect(() => {
+    const on = new URLSearchParams(location.search).has("debug");
+    const id = requestAnimationFrame(() => setDebug(on));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   const goTo = (i: number) => {
     const t = triggers.current[i];
@@ -189,6 +205,7 @@ export function JourneyClient({ nav, labels, scene, projects, silhouette, childr
     <div ref={root} className="relative">
       {stage}
       <div className="relative z-10">{children}</div>
+      {debug && <DebugPanel mode={gaveUp ? "3d spento (fps bassi)" : mode} />}
       {/* Puntini in differenza di colore: leggibili sia sul nero sia sul crema. */}
       <nav aria-label={nav} className="fixed top-1/2 right-3 z-30 hidden -translate-y-1/2 text-white mix-blend-difference sm:block md:right-6">
         <ol className="flex flex-col gap-1">
@@ -213,6 +230,27 @@ export function JourneyClient({ nav, labels, scene, projects, silhouette, childr
       </nav>
     </div>
   );
+}
+
+/** Pannello di diagnostica (?debug=1): fps, scheda grafica, qualità. Si aggiorna senza render React. */
+function DebugPanel({ mode }: { mode: string }) {
+  const out = useRef<HTMLPreElement>(null);
+  useEffect(() => {
+    const id = window.setInterval(() => {
+      const s = journey.stats;
+      if (out.current)
+        out.current.textContent = [
+          `modalità: ${mode}`,
+          `fps: ${s.fps}`,
+          `GPU: ${s.gpu || "-"}`,
+          `risoluzione: ${s.dpr}×  postprocessing: ${s.post ? "sì" : "no"}`,
+          `qualità ridotta: ${s.reduced ? "sì" : "no"}  telefono/lite: ${journey.lite ? "sì" : "no"}`,
+          `capitoli: ${journey.local.map((v) => v.toFixed(2)).join(" ")}`,
+        ].join("\n");
+    }, 500);
+    return () => window.clearInterval(id);
+  }, [mode]);
+  return <pre ref={out} className="fixed bottom-3 left-3 z-50 max-w-[90vw] rounded bg-black/80 p-3 text-[11px] leading-snug text-white" />;
 }
 
 /** Movimenti dei testi HTML dentro i capitoli fissati, sulla stessa linea temporale (0–1). */
