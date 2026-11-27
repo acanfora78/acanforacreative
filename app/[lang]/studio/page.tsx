@@ -57,7 +57,7 @@ export default async function StudioPage({ params }: PageProps<"/[lang]/studio">
       <section aria-labelledby="who" className="theme-dark border-t border-line py-[var(--spacing-section)]">
         <div className="container-site grid-editorial items-start gap-y-12">
           <div className="col-span-4 md:col-span-4 lg:col-span-5">
-            <div className="relative aspect-[4/5] overflow-hidden border border-line">
+            <div className="k-iris relative aspect-[4/5] overflow-hidden">
               <Image
                 src="/studio/morgan-acanfora.jpg"
                 alt={t.studio.photoAlt}
