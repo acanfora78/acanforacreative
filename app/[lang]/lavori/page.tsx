@@ -23,7 +23,7 @@ export default async function WorkPage({ params }: PageProps<"/[lang]/lavori">) 
             return (
               <li key={pr.slug}>
                 <Link href={href(locale, "lavori", pr.slug)} className="group block">
-                    <div className="relative aspect-[4/5] overflow-hidden border border-line sm:aspect-[4/3]">
+                    <div className="k-curtain relative aspect-[4/5] overflow-hidden border border-line sm:aspect-[4/3]">
                       <ProjectCover project={pr} locale={locale} t={t} />
                     </div>
                   <div className="mt-5 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">

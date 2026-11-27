@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Words } from "@/components/kinetic/Words";
 import { notFound } from "next/navigation";
 import { Logo, type LogoVariant } from "@/components/brand/Logo";
 import { ProjectCover } from "@/components/home/Sections";
@@ -42,7 +43,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/[lang]/lavor
           <Link href={href(locale, "lavori")} className="label text-muted hover:text-fg">
             ← {c.back}
           </Link>
-          <h1 id="cs-title" className="font-display mt-10 text-display-xl text-balance">
+          <h1 id="cs-title" className="k-line font-display mt-10 text-display-xl text-balance">
             {pr.name}
           </h1>
           {kind && <p className="label mt-6 text-accent">{kind}</p>}
@@ -68,7 +69,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/[lang]/lavor
           </dl>
         </div>
         <div className="container-site py-16">
-            <div className="relative aspect-[4/5] overflow-hidden border border-line sm:aspect-[16/9]">
+            <div className="k-curtain relative aspect-[4/5] overflow-hidden border border-line sm:aspect-[16/9]">
               <ProjectCover project={pr} locale={locale} t={t} large />
             </div>
         </div>
@@ -81,7 +82,9 @@ export default async function CaseStudyPage({ params }: PageProps<"/[lang]/lavor
             <h2 id="overview" className="sr-only">
               {c.overview}
             </h2>
-            <p className="font-display text-display-m text-pretty">{pr.summary[locale]}</p>
+            <p className="k-ink font-display text-display-m text-pretty">
+              <Words text={pr.summary[locale]} />
+            </p>
             <h3 className="label mt-14 mb-5 text-muted">{c.done}</h3>
             <ul className="border-t border-line">
               {pr.services[locale].map((sv) => (

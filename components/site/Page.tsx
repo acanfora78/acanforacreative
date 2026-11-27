@@ -33,11 +33,11 @@ export function PageIntro({ label, title, lead, children }: { label: string; tit
   return (
     <section className="theme-dark">
       <div className="container-site pt-40 pb-[var(--spacing-section)] md:pt-48">
-        <Label className="mb-8">{label}</Label>
-        <h1 className="font-display max-w-5xl text-display-xl text-balance">
+        <Label className="k-fade mb-8">{label}</Label>
+        <h1 className="k-line font-display max-w-5xl text-display-xl text-balance">
           {title}
         </h1>
-        {lead && <p className="prose-measure mt-10 text-lead font-light text-muted">{lead}</p>}
+        {lead && <p className="k-fade prose-measure mt-10 text-lead font-light text-muted" style={{ "--d": "0.5s" } as React.CSSProperties}>{lead}</p>}
         {children}
       </div>
     </section>
@@ -49,7 +49,7 @@ export function SectionHead({ label, title, id }: { label: string; title: string
   return (
     <div className="mb-12 md:mb-16">
       <Label className="mb-4">{label}</Label>
-      <h2 id={id} className="font-display text-display-l text-balance">
+      <h2 id={id} className="k-up font-display text-display-l text-balance">
         {title}
       </h2>
     </div>
