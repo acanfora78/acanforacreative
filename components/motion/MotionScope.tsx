@@ -33,7 +33,10 @@ export function MotionScope({ children }: { children: ReactNode }) {
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         const scope = root.current;
         if (!scope) return;
-        const q = <T extends Element>(sel: string) => gsap.utils.toArray<T>(sel, scope);
+        // Home in 3D (fase 10): i capitoli fissati li anima il viaggio, non questa regia.
+        const journey3d = document.documentElement.dataset.journeyMode === "3d";
+        const q = <T extends Element>(sel: string) =>
+          gsap.utils.toArray<T>(sel, scope).filter((el) => !(journey3d && el.closest("[data-chapter][data-pin]")));
         const reveal = { duration: 1.1, ease: "expo.out" } as const;
 
         q<HTMLElement>("[data-split]").forEach((el) => {
@@ -84,7 +87,10 @@ export function MotionScope({ children }: { children: ReactNode }) {
         // Fase 9.5: passaggio nero ↔ avorio. Una sezione che cambia tema rispetto alla precedente
         // parte dal colore di quella e arriva al suo mentre entra nello schermo.
         q<HTMLElement>(".theme-light, .theme-dark").forEach((el) => {
-          const prev = el.previousElementSibling;
+          // In home le sezioni sono dentro i contenitori dei capitoli (fase 10): si guarda il capitolo precedente.
+          const chapter = el.parentElement?.hasAttribute("data-chapter") ? el.parentElement : null;
+          if (chapter?.hasAttribute("data-stage")) return; // sfondo gestito dalla scena 3D
+          const prev = chapter ? chapter.previousElementSibling?.firstElementChild : el.previousElementSibling;
           if (!prev) return;
           const light = el.classList.contains("theme-light");
           if (!prev.classList.contains(light ? "theme-dark" : "theme-light")) return;

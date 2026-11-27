@@ -17,13 +17,16 @@ export const it = {
   },
   hero: {
     eyebrow: "Creative Digital Studio — Brand · Web · E-commerce · AI",
-    skipIntro: "Salta intro",
-    introLabel: "Introduzione",
     titleLines: ["Ogni brand ha una storia.", "Noi la mettiamo in scena."],
     text: "Identità visive, siti, e-commerce e contenuti digitali, progettati con la cura di una produzione cinematografica.",
     primary: "Parliamo del tuo progetto",
     secondary: "Guarda i lavori",
     scroll: "Scorri",
+  },
+  journey: {
+    scene: "SCENA",
+    nav: "Capitoli",
+    chapters: ["Obiettivo", "Manifesto", "Progetti", "Servizi", "Metodo", "Studio", "Contatto"],
   },
   manifesto: {
     label: "Manifesto",

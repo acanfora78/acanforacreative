@@ -37,23 +37,14 @@ export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Prom
   };
 }
 
-/*
- * Intro solo se: arrivo diretto in home (il documento caricato è la home), prima volta nella
- * sessione, nessun "riduci movimento", nessun risparmio dati, WebGL 2 disponibile.
- * Sicurezze: se l'intro non parte entro 2,5 s o non finisce entro 8 s, il velo sparisce.
- */
-const INTRO_BOOT = `(function(){try{var d=document.documentElement;if(!/^\\/(it|en)\\/?$/.test(location.pathname))return;if(sessionStorage.getItem("ac-intro"))return;if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;var c=navigator.connection;if(c&&c.saveData)return;if(!window.WebGL2RenderingContext)return;d.dataset.intro="pending";setTimeout(function(){if(d.dataset.intro==="pending")d.dataset.intro="done"},2500);setTimeout(function(){d.dataset.intro="done"},8000)}catch(e){}})();`;
-
 /** Layout radice del sito pubblico: una per lingua, con <html lang> corretto. */
 export default async function LangLayout({ children, params }: LayoutProps<"/[lang]">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
   const t = getDictionary(lang);
   return (
-    <html lang={lang} className={fontVariables} suppressHydrationWarning>
+    <html lang={lang} className={fontVariables}>
       <body>
-        {/* Decide l'intro prima del primo disegno (vedi components/home/HeroStage.tsx). */}
-        <script dangerouslySetInnerHTML={{ __html: INTRO_BOOT }} />
         <a
           href="#contenuto"
           className="label sr-only z-50 bg-fg px-4 py-3 text-bg focus:not-sr-only focus:fixed focus:top-4 focus:left-4"

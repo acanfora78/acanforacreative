@@ -6,7 +6,6 @@ import type { Dictionary } from "@/content/dictionaries";
 import type { Project } from "@/content/projects";
 import { mailHref, studio, whatsappHref } from "@/content/site";
 import { SharedCover } from "@/components/motion/PageTransition";
-import { HeroStage } from "@/components/home/HeroStage";
 import { href, type Locale } from "@/lib/i18n";
 
 /*
@@ -16,16 +15,33 @@ import { href, type Locale } from "@/lib/i18n";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
+/**
+ * Immagine statica del capitolo (fase 10), resa dalla scena 3D: si vede senza 3D
+ * ("riduci movimento", dispositivi senza GPU, senza JavaScript); con il 3D attivo è nascosta.
+ */
+function ChapterStill({ src, width, height }: { src: string; width: number; height: number }) {
+  return (
+    <div className="chapter-still mb-10 ml-auto w-40 md:w-56" aria-hidden="true">
+      <Image src={src} alt="" width={width} height={height} sizes="(min-width: 768px) 14rem, 10rem" className="h-auto w-full" />
+    </div>
+  );
+}
+
 export function Hero({ locale, t }: { locale: Locale; t: Dictionary }) {
   return (
     <section aria-labelledby="hero-title" className="letterbox theme-dark relative flex min-h-svh flex-col">
-      <HeroStage skipLabel={t.hero.skipIntro} introLabel={t.hero.introLabel} />
-      <div className="container-site relative z-10 flex flex-1 flex-col justify-end pt-32 pb-12 md:pt-40 md:pb-16">
+      {/* Immagine statica del capitolo 1 (da tablet in su): senza JavaScript e senza 3D. Con il 3D attivo sparisce (globals.css).
+          Su telefono non c'è: l'elemento più grande resta il titolo (LCP). */}
+      <div className="journey-poster pointer-events-none absolute top-[4%] right-0 hidden h-[58%] w-[52%] md:block">
+        <Image src="/sculpture/poster-tq.avif" alt="" fill sizes="52vw" className="object-contain" />
+      </div>
+      <div data-hero-copy className="container-site relative z-10 flex flex-1 flex-col justify-end pt-32 pb-12 md:pt-40 md:pb-16">
         <p className="intro-fade label mb-8 text-muted md:mb-12 [--d:0.5s]">{t.hero.eyebrow}</p>
         <h1 id="hero-title" className="font-display text-display-xl text-balance">
           {t.hero.titleLines.map((line, i) => (
-            <span key={i} className={`intro-line ${i > 0 ? "text-muted" : ""}`} style={{ "--i": i } as React.CSSProperties}>
-              <span>{line}</span>
+            // Fase 10: titolo visibile dal primo disegno (è l'elemento LCP); l'apertura la fanno letterbox e anello 3D.
+            <span key={i} className={`block ${i > 0 ? "text-muted" : ""}`}>
+              {line}
             </span>
           ))}
         </h1>
@@ -45,10 +61,12 @@ export function Hero({ locale, t }: { locale: Locale; t: Dictionary }) {
 
 export function Manifesto({ t }: { t: Dictionary }) {
   return (
-    <section aria-label={t.manifesto.label} className="theme-light py-[var(--spacing-section)]">
-      <div className="container-site grid-editorial">
-        <Label className="col-span-4 mb-8 md:col-span-2">{t.manifesto.label}</Label>
-        <p data-split className="font-display col-span-4 text-display-m text-pretty md:col-span-8 lg:col-span-9 lg:col-start-4">
+    <section aria-label={t.manifesto.label} className="theme-light flex min-h-svh items-start py-[var(--spacing-section)]">
+      <div className="container-site grid-editorial w-full">
+        <Label className="col-span-4 mb-8 md:col-span-2">
+          <span data-journey-label>{t.manifesto.label}</span>
+        </Label>
+        <p data-journey-lines className="font-display col-span-4 text-display-m text-pretty md:col-span-8 lg:col-span-9 lg:col-start-4">
           {t.manifesto.text}
         </p>
       </div>
@@ -91,7 +109,7 @@ export function FeaturedWork({ locale, t, projects }: { locale: Locale; t: Dicti
   return (
     <section aria-labelledby="work-title" className="theme-dark py-[var(--spacing-section)]">
       <div className="container-site">
-        <div className="mb-12 flex flex-wrap items-end justify-between gap-6 md:mb-16">
+        <div data-journey-head className="mb-12 flex flex-wrap items-end justify-between gap-6 md:mb-16">
           <div>
             <Label className="mb-4">{t.work.label}</Label>
             <h2 id="work-title" data-split className="font-display text-display-l">
@@ -140,7 +158,7 @@ export function ServicesIndex({ locale, t }: { locale: Locale; t: Dictionary }) 
   return (
     <section aria-labelledby="services-title" className="theme-dark border-t border-line py-[var(--spacing-section)]">
       <div className="container-site">
-        <div className="mb-12 flex flex-wrap items-end justify-between gap-6 md:mb-16">
+        <div data-journey-head className="mb-12 flex flex-wrap items-end justify-between gap-6 md:mb-16">
           <div>
             <Label className="mb-4">{t.services.label}</Label>
             <h2 id="services-title" data-split className="font-display text-display-l">
@@ -162,7 +180,7 @@ export function ServicesIndex({ locale, t }: { locale: Locale; t: Dictionary }) 
                 <span className="font-display text-heading transition-colors group-hover:text-accent md:col-span-6">
                   {s.name}
                 </span>
-                <span className="text-muted md:col-span-5">{s.text}</span>
+                <span data-service-text className="text-muted md:col-span-5">{s.text}</span>
               </Link>
             </li>
           ))}
@@ -176,17 +194,20 @@ export function Method({ t }: { t: Dictionary }) {
   return (
     <section aria-labelledby="method-title" className="theme-light py-[var(--spacing-section)]">
       <div className="container-site">
-        <Label className="mb-4">{t.method.label}</Label>
-        <h2 id="method-title" data-split className="font-display mb-12 text-display-l md:mb-20">
-          {t.method.title}
-        </h2>
+        <ChapterStill src="/journey/metodo.avif" width={720} height={624} />
+        <div data-journey-head>
+          <Label className="mb-4">{t.method.label}</Label>
+          <h2 id="method-title" data-split className="font-display mb-12 text-display-l md:mb-20">
+            {t.method.title}
+          </h2>
+        </div>
         <ol data-stagger className="grid gap-12 md:grid-cols-2 lg:grid-cols-4 lg:gap-[var(--spacing-gutter)]">
           {t.method.steps.map((s, i) => (
             <li key={s.name} className="relative pt-6">
               <span aria-hidden="true" data-draw className="absolute inset-x-0 top-0 h-px bg-fg" />
               <p className="label text-muted">{pad(i + 1)}</p>
               <h3 className="font-display mt-6 text-heading">{s.name}</h3>
-              <p className="mt-3 text-muted">{s.text}</p>
+              <p data-step-text className="mt-3 text-muted">{s.text}</p>
             </li>
           ))}
         </ol>
@@ -199,7 +220,7 @@ export function StudioTeaser({ locale, t }: { locale: Locale; t: Dictionary }) {
   return (
     <section aria-labelledby="studio-title" className="theme-dark py-[var(--spacing-section)]">
       <div className="container-site grid-editorial items-center gap-y-12">
-        <div className="col-span-4 md:col-span-4 lg:col-span-5">
+        <div data-studio-photo className="col-span-4 md:col-span-4 lg:col-span-5">
           <div data-wipe className="relative aspect-[4/5] overflow-hidden border border-line">
             <Image
               src="/studio/morgan-acanfora.jpg"
@@ -210,7 +231,7 @@ export function StudioTeaser({ locale, t }: { locale: Locale; t: Dictionary }) {
             />
           </div>
         </div>
-        <div className="col-span-4 md:col-span-4 lg:col-span-6 lg:col-start-7">
+        <div data-journey-copy className="col-span-4 md:col-span-4 lg:col-span-6 lg:col-start-7">
           <Label className="mb-4">{t.studio.label}</Label>
           <h2 id="studio-title" data-split className="font-display text-display-l">
             {t.studio.title}
@@ -233,7 +254,8 @@ export function StudioTeaser({ locale, t }: { locale: Locale; t: Dictionary }) {
 export function Closing({ locale, t }: { locale: Locale; t: Dictionary }) {
   return (
     <section aria-labelledby="closing-title" className="theme-dark border-t border-line py-[var(--spacing-section)]">
-      <div className="container-site">
+      <div data-journey-copy className="container-site">
+        <ChapterStill src="/journey/contatto.avif" width={900} height={655} />
         <h2 id="closing-title" data-split className="font-display text-display-xl text-balance">
           {t.closing.titleLines.map((line, i) => (
             <span key={i} className={`block ${i > 0 ? "text-muted" : ""}`}>
