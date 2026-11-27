@@ -92,6 +92,7 @@ async function buildAtlas(lite: boolean) {
 export function ProjectReel() {
   const mesh = useRef<InstancedMesh>(null);
   const size = useThree((s) => s.size);
+  const gl = useThree((s) => s.gl);
   const n = journey.projects.length;
   const count = n + PAD * 2;
   const geometry = useMemo(() => {
@@ -160,6 +161,7 @@ export function ProjectReel() {
     buildAtlas(journey.lite).then(({ tex, cols, rows }) => {
       if (!alive) return tex.dispose();
       material.uniforms.uMap.value = tex;
+      gl.initTexture(tex); // caricata ora sulla GPU, non al primo ingresso nel capitolo
       material.uniforms.uGrid.value = [cols, rows];
     });
     const onHover = (e: Event) => { hoverTarget.current = (e as CustomEvent<number>).detail; };
@@ -171,7 +173,7 @@ export function ProjectReel() {
       geometry.dispose();
       material.dispose();
     };
-  }, [geometry, material]);
+  }, [geometry, material, gl]);
 
   const hoverTarget = useRef(0);
   const tmp = useMemo(() => ({ m: new Matrix4(), q: new Quaternion(), p: new Vector3(), s: new Vector3(), z: new Vector3(0, 0, 1) }), []);

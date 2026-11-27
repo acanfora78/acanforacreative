@@ -201,6 +201,8 @@ async function silhouetteFromImage(n: number, r: () => number, src: string) {
 export async function buildShapes(n: number, silhouette?: string) {
   const table = new Float32Array(SHAPES.length * n * 3);
   for (const [k, name] of SHAPES.entries()) {
+    // Una forma per volta: tra l'una e l'altra il browser può disegnare e rispondere allo scroll.
+    await new Promise((resolve) => setTimeout(resolve, 0));
     const r = rng(1000 + k * 7919);
     let pts: number[];
     if (name === "silhouette") {

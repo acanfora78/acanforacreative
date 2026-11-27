@@ -68,6 +68,20 @@ Il titolare ha chiesto di procedere senza fermarsi tra i capitoli (26/11/2026). 
 - Dopo l'ultimo capitolo la tela smette di disegnare e il piè di pagina è visibile; tornando su riparte.
 - Senza GPU e con "riduci movimento": nessuna tela, nessun pin, immagini statiche caricate.
 
+## Prestazioni (correzioni del 27/11/2026)
+Segnalazione del titolare: animazioni lente e blocchi. Misure con traccia del browser (senza GPU, quindi i valori assoluti sono gonfiati; contano i rapporti).
+| Problema | Prima | Correzione | Dopo |
+|---|---|---|---|
+| Shader compilati al primo ingresso in ogni scena | blocco di 1,3 s nel capitolo 1, ~150 ms a ogni capitolo | `Warmup` in `Stage.tsx`: compila tutti gli shader all'avvio, un oggetto per fotogramma, in parallelo dove possibile | nessun blocco nel capitolo 1, quasi nessuno ai cambi di capitolo |
+| Vetro con trasmissione nell'anello | scena ridisegnata due volte per fotogramma nella Hero | vetro "finto": trasparenza + riflessi + iridescenza | un solo disegno per fotogramma |
+| Forme delle particelle costruite tutte insieme | blocco di 0,7 s al caricamento | una forma alla volta, con pause | blocchi sotto 0,3 s |
+| Qualità adattiva che saliva e scendeva | buffer riallocati più volte (scatti) | scende una volta sola e non risale | — |
+| Lavagne del ciak create al colpo | piccolo blocco a ogni passo | 4 lavagne preparate e caricate sulla GPU all'avvio | — |
+| Luce del faro aggiornata a ogni movimento del mouse | ridisegno a tutto schermo continuo | solo nel capitolo 7, al massimo una volta per fotogramma | — |
+| Viaggio molto lungo, scroll "in ritardo" | ~18 schermate di scroll fissato, Lenis morbido | durate ridotte di circa il 30%, Lenis più reattivo (lerp 0,14) | ~12,5 schermate |
+| Avvio della tela 3D | durante il caricamento | quando il browser è libero (requestIdleCallback) | primo disegno non conteso |
+| Risoluzione | fino a 1,5× anche su schermi Retina | 1,25× su schermi ad alta densità; bloom a mezza risoluzione | — |
+
 ## Asset da fornire
 - `public/images/morgan-sagoma.png`: figura su sfondo trasparente, mezzo busto, almeno 1000 px di altezza (capitolo 6).
 - `public/models/ciak.glb` (facoltativo): sotto i 300 KB, stecca come nodo separato con il perno sulla cerniera (capitolo 5). Senza, ciak procedurale.

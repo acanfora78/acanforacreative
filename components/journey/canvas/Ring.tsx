@@ -21,11 +21,12 @@ export function Ring() {
         ? new MeshStandardMaterial({ color: 0x8f8b84, metalness: 1, roughness: 0.28 })
         : new MeshPhysicalMaterial({
             color: 0xf3e6cc,
-            metalness: 0.05,
+            // Vetro "finto": trasparenza e riflessi dello studio, senza trasmissione
+            // (che ridisegnava l'intera scena due volte per fotogramma).
+            metalness: 0.2,
             roughness: 0.06,
-            transmission: 1,
-            thickness: 0.35,
-            ior: 1.5,
+            transparent: true,
+            opacity: 0.72,
             iridescence: 0.35,
             iridescenceIOR: 1.3,
             clearcoat: 1,

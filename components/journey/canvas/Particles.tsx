@@ -163,6 +163,7 @@ export function Particles() {
       tex.minFilter = tex.magFilter = NearestFilter;
       tex.needsUpdate = true;
       material.uniforms.uShapes.value = tex;
+      gl.initTexture(tex); // caricata ora sulla GPU, non al primo ingresso nel capitolo
     });
     return () => {
       alive = false;
@@ -170,7 +171,7 @@ export function Particles() {
       geometry.dispose();
       material.dispose();
     };
-  }, [count, rows, geometry, material]);
+  }, [count, rows, geometry, material, gl]);
 
   // Meno punti se il dispositivo fatica.
   usePerformanceMonitor({
