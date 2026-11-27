@@ -1,6 +1,4 @@
 import type { ReactNode } from "react";
-import { MotionScope } from "@/components/motion/MotionScope";
-import { PageTransition } from "@/components/motion/PageTransition";
 import { Label } from "@/components/primitives/Typography";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
@@ -24,11 +22,7 @@ export function PageShell({
   return (
     <>
       <Header locale={locale} t={t} current={current} slug={slug} />
-      <PageTransition>
-        <main id="contenuto">
-          <MotionScope>{children}</MotionScope>
-        </main>
-      </PageTransition>
+      <main id="contenuto">{children}</main>
       <Footer locale={locale} t={t} />
     </>
   );
@@ -39,13 +33,11 @@ export function PageIntro({ label, title, lead, children }: { label: string; tit
   return (
     <section className="theme-dark">
       <div className="container-site pt-40 pb-[var(--spacing-section)] md:pt-48">
-        <Label className="intro-fade mb-8 [--d:0.2s]">{label}</Label>
+        <Label className="mb-8">{label}</Label>
         <h1 className="font-display max-w-5xl text-display-xl text-balance">
-          <span className="intro-line">
-            <span>{title}</span>
-          </span>
+          {title}
         </h1>
-        {lead && <p className="intro-fade prose-measure mt-10 text-lead font-light text-muted [--d:0.7s]">{lead}</p>}
+        {lead && <p className="prose-measure mt-10 text-lead font-light text-muted">{lead}</p>}
         {children}
       </div>
     </section>
@@ -57,7 +49,7 @@ export function SectionHead({ label, title, id }: { label: string; title: string
   return (
     <div className="mb-12 md:mb-16">
       <Label className="mb-4">{label}</Label>
-      <h2 id={id} data-split className="font-display text-display-l text-balance">
+      <h2 id={id} className="font-display text-display-l text-balance">
         {title}
       </h2>
     </div>

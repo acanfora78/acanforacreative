@@ -24,7 +24,7 @@ export default async function StudioPage({ params }: PageProps<"/[lang]/studio">
       <section aria-labelledby="values" className="theme-light py-[var(--spacing-section)]">
         <div className="container-site">
           <SectionHead id="values" label={s.valuesLabel} title={s.valuesTitle} />
-          <ul data-stagger className="grid gap-12 md:grid-cols-3 md:gap-[var(--spacing-gutter)]">
+          <ul className="grid gap-12 md:grid-cols-3 md:gap-[var(--spacing-gutter)]">
             {s.values.map((v) => (
               <li key={v.name} className="border-t border-fg pt-6">
                 <h3 className="font-display text-heading">{v.name}</h3>
@@ -38,7 +38,7 @@ export default async function StudioPage({ params }: PageProps<"/[lang]/studio">
       <section aria-labelledby="method" className="theme-dark py-[var(--spacing-section)]">
         <div className="container-site">
           <SectionHead id="method" label={s.methodLabel} title={s.methodTitle} />
-          <ol data-stagger className="border-t border-line">
+          <ol className="border-t border-line">
             {s.method.map((m, i) => (
               <li key={m.name} className="grid gap-4 border-b border-line py-10 md:grid-cols-12 md:gap-[var(--spacing-gutter)]">
                 <span className="label text-muted md:col-span-1">{pad(i + 1)}</span>
@@ -57,7 +57,7 @@ export default async function StudioPage({ params }: PageProps<"/[lang]/studio">
       <section aria-labelledby="who" className="theme-dark border-t border-line py-[var(--spacing-section)]">
         <div className="container-site grid-editorial items-start gap-y-12">
           <div className="col-span-4 md:col-span-4 lg:col-span-5">
-            <div data-wipe className="relative aspect-[4/5] overflow-hidden border border-line">
+            <div className="relative aspect-[4/5] overflow-hidden border border-line">
               <Image
                 src="/studio/morgan-acanfora.jpg"
                 alt={t.studio.photoAlt}

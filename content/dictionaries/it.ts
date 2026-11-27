@@ -23,11 +23,6 @@ export const it = {
     secondary: "Guarda i lavori",
     scroll: "Scorri",
   },
-  journey: {
-    scene: "SCENA",
-    nav: "Capitoli",
-    chapters: ["Obiettivo", "Manifesto", "Progetti", "Servizi", "Metodo", "Studio", "Contatto"],
-  },
   manifesto: {
     label: "Manifesto",
     text: "Un'immagine forte non nasce per caso. Nasce da una storia chiara, da scelte precise e da dettagli curati uno per uno. Lavoriamo come su un set: ogni inquadratura ha una ragione.",
