@@ -43,6 +43,13 @@ function slate(label: string, n: number) {
   const c = document.createElement("canvas");
   c.width = 1024;
   c.height = 640;
+  drawSlate(c, label, n);
+  const t = new CanvasTexture(c);
+  t.colorSpace = SRGBColorSpace;
+  return t;
+}
+
+function drawSlate(c: HTMLCanvasElement, label: string, n: number) {
   const g = c.getContext("2d")!;
   g.fillStyle = "#151412";
   g.fillRect(0, 0, 1024, 640);
@@ -68,9 +75,6 @@ function slate(label: string, n: number) {
   g.fillStyle = "rgba(247,244,236,0.6)";
   g.font = `28px ${sans}`;
   g.fillText("TAKE 1", 70, 320);
-  const t = new CanvasTexture(c);
-  t.colorSpace = SRGBColorSpace;
-  return t;
 }
 
 /** Angolo della stecca come funzione pura dell'avanzamento del capitolo. */
@@ -86,14 +90,19 @@ export function Clapper() {
   const group = useRef<Group>(null);
   const stick = useRef<Group>(null);
   const size = useThree((s) => s.size);
+  const gl = useThree((s) => s.gl);
   const shown = useRef(-1);
   const res = useMemo(() => {
     const stripeTex = stripes();
-    const body = new MeshStandardMaterial({ color: 0xffffff, roughness: 0.55, metalness: 0.05, transparent: true });
+    // Le 4 lavagne (SCENA 01–04) preparate subito: al colpo si scambia solo la texture.
+    // Presenti fin dall'inizio, così lo shader viene compilato con la texture (vedi Warmup).
+    const slates = [1, 2, 3, 4].map((n) => slate(journey.sceneLabel, n));
+    const body = new MeshStandardMaterial({ map: slates[0], color: 0xffffff, roughness: 0.55, metalness: 0.05, transparent: true });
     const side = new MeshStandardMaterial({ color: 0x151412, roughness: 0.6, metalness: 0.1, transparent: true });
     const bar = new MeshStandardMaterial({ map: stripeTex, roughness: 0.45, metalness: 0.05, transparent: true });
     return {
       stripeTex,
+      slates,
       body,
       side,
       bar,
@@ -102,9 +111,22 @@ export function Clapper() {
       stickGeo: new BoxGeometry(W, 0.2, 0.07),
     };
   }, []);
+  // Lavagne ridisegnate quando i font sono pronti e caricate subito sulla GPU (niente scatti al colpo).
+  useEffect(() => {
+    let alive = true;
+    document.fonts?.ready.then(() => {
+      if (!alive) return;
+      res.slates.forEach((t, i) => {
+        drawSlate(t.image as HTMLCanvasElement, journey.sceneLabel, i + 1);
+        t.needsUpdate = true;
+        gl.initTexture(t);
+      });
+    });
+    return () => { alive = false; };
+  }, [res, gl]);
   useEffect(
     () => () => {
-      res.body.map?.dispose();
+      res.slates.forEach((t) => t.dispose());
       Object.values(res).forEach((r) => (r as { dispose?: () => void }).dispose?.());
     },
     [res],
@@ -125,9 +147,7 @@ export function Clapper() {
     const n = ch === 4 ? methodStep(p).step + 1 : 4;
     if (n !== shown.current) {
       shown.current = n;
-      res.body.map?.dispose();
-      res.body.map = slate(journey.sceneLabel, n);
-      res.body.needsUpdate = true;
+      res.body.map = res.slates[n - 1];
     }
     s.rotation.z = ch === 4 ? stickAngle(p) : 0;
     const sub = subject(size.width / size.height);

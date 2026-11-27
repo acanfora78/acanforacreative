@@ -13,13 +13,13 @@ export type Chapter = {
 };
 
 export const chapters: Chapter[] = [
-  { id: "obiettivo", vh: { desktop: 220, mobile: 150 }, pin: true, stage: true },
-  { id: "manifesto", vh: { desktop: 260, mobile: 170 }, pin: true, stage: true },
-  { id: "progetti", vh: { desktop: 320, mobile: 220 }, pin: true, stage: true },
-  { id: "servizi", vh: { desktop: 360, mobile: 220 }, pin: true, stage: true },
-  { id: "metodo", vh: { desktop: 280, mobile: 170 }, pin: true, stage: true },
-  { id: "studio", vh: { desktop: 200, mobile: 130 }, pin: true, stage: true },
-  { id: "contatto", vh: { desktop: 150, mobile: 100 }, pin: true, stage: true },
+  { id: "obiettivo", vh: { desktop: 160, mobile: 110 }, pin: true, stage: true },
+  { id: "manifesto", vh: { desktop: 180, mobile: 120 }, pin: true, stage: true },
+  { id: "progetti", vh: { desktop: 220, mobile: 150 }, pin: true, stage: true },
+  { id: "servizi", vh: { desktop: 240, mobile: 160 }, pin: true, stage: true },
+  { id: "metodo", vh: { desktop: 200, mobile: 130 }, pin: true, stage: true },
+  { id: "studio", vh: { desktop: 140, mobile: 100 }, pin: true, stage: true },
+  { id: "contatto", vh: { desktop: 110, mobile: 80 }, pin: true, stage: true },
 ];
 
 /** Ultimo capitolo con scena 3D: dopo la sua fine la tela smette di disegnare. */

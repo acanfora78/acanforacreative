@@ -22,7 +22,8 @@ import { Rig } from "./Rig";
  * la scena è finita (capitoli non ancora in 3D): vedi <Rig>.
  */
 export default function Stage() {
-  const [dpr, setDpr] = useState(1.5);
+  // Risoluzione: 1,5 al massimo; 1,25 su schermi ad alta densità e telefoni (il costo cresce col quadrato).
+  const [dpr, setDpr] = useState(() => (journey.lite || window.devicePixelRatio > 1.5 ? 1.25 : 1.5));
   const [post, setPost] = useState(!journey.lite);
   return (
     <div className="pointer-events-none fixed inset-0 z-0" aria-hidden="true">
@@ -38,11 +39,15 @@ export default function Stage() {
           });
         }}
       >
+        {/* Se gli fps calano si scende di qualità una volta sola e non si risale:
+            ogni cambio di risoluzione rialloca tutti i buffer e fa scattare la scena. */}
         <PerformanceMonitor
+          flipflops={2}
           onDecline={() => { setDpr(1); setPost(false); }}
-          onIncline={() => setDpr(1.5)}
+          onFallback={() => { setDpr(1); setPost(false); }}
         >
           <Studio />
+          <Warmup />
           <Wake />
           <Rig />
           <Ring />
@@ -66,6 +71,32 @@ function Wake() {
     journey.onChange = () => invalidate();
     return () => { journey.onChange = null; };
   }, [invalidate]);
+  return null;
+}
+
+/**
+ * Compila subito tutti gli shader della scena (anche dei capitoli non ancora visibili), in parallelo
+ * dove il browser lo permette: senza, ogni capitolo compila al primo ingresso e la pagina si blocca.
+ */
+function Warmup() {
+  const gl = useThree((s) => s.gl);
+  const scene = useThree((s) => s.scene);
+  const camera = useThree((s) => s.camera);
+  useEffect(() => {
+    let alive = true;
+    const nextFrame = () => new Promise((r) => requestAnimationFrame(() => setTimeout(r, 0)));
+    (async () => {
+      await nextFrame();
+      // Un oggetto alla volta, con un fotogramma in mezzo: nessun blocco unico lungo,
+      // anche nei browser senza compilazione parallela degli shader.
+      for (const child of [...scene.children]) {
+        if (!alive) return;
+        await gl.compileAsync(child, camera, scene).catch(() => {});
+        await nextFrame();
+      }
+    })();
+    return () => { alive = false; };
+  }, [gl, scene, camera]);
   return null;
 }
 

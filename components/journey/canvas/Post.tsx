@@ -19,7 +19,7 @@ export function Post() {
   });
   return (
     <EffectComposer multisampling={0}>
-      <Bloom intensity={0.35} luminanceThreshold={0.82} luminanceSmoothing={0.15} mipmapBlur />
+      <Bloom intensity={0.35} luminanceThreshold={0.82} luminanceSmoothing={0.15} resolutionScale={0.5} />
       <ChromaticAberration offset={offset} radialModulation={false} modulationOffset={0} />
       <Noise premultiply blendFunction={BlendFunction.SOFT_LIGHT} opacity={0.35} />
       <Vignette offset={0.3} darkness={0.45} />

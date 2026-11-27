@@ -6,7 +6,7 @@ import { SplitText } from "gsap/SplitText";
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
 import dynamic from "next/dynamic";
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { detectTier } from "@/components/sculpture/Sculpture";
 import { chapters } from "./chapters";
 import { journey, type JourneyProject } from "./progress";
@@ -48,9 +48,13 @@ export function JourneyClient({ nav, labels, scene, projects, silhouette, childr
     journey.sceneLabel = scene;
     root.dataset.journeyMode = next;
     if (next === "static") root.dataset.journey = "static";
-    const id = requestAnimationFrame(() => setMode(next));
+    // La tela 3D parte quando il browser è libero dopo il caricamento: non contende il primo disegno.
+    const idle = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 200));
+    const cancelIdle = window.cancelIdleCallback ?? window.clearTimeout;
+    const id = next === "3d" ? idle(() => setMode(next), { timeout: 1500 }) : (setTimeout(() => setMode(next), 0) as unknown as number);
     return () => {
-      cancelAnimationFrame(id);
+      if (next === "3d") cancelIdle(id);
+      else clearTimeout(id);
       delete root.dataset.journeyMode;
     };
   }, [projects, silhouette, scene]);
@@ -86,7 +90,8 @@ export function JourneyClient({ nav, labels, scene, projects, silhouette, childr
     }
 
     // ── 3D ──
-    lenis = new Lenis({ autoRaf: false });
+    // lerp più alto del predefinito (0,1): lo scroll segue la rotella con meno ritardo.
+    lenis = new Lenis({ autoRaf: false, lerp: 0.14 });
     lenisRef.current = lenis;
     lenis.on("scroll", (e: Lenis) => {
       journey.velocity = e.velocity;
@@ -98,11 +103,18 @@ export function JourneyClient({ nav, labels, scene, projects, silhouette, childr
 
     // Capitolo 7: la luce del faro segue il cursore anche sul testo (variabili CSS, nessun render React).
     const beacon = el.querySelector<HTMLElement>('[data-chapter="contatto"] > section');
+    // Solo durante il capitolo 7 e al massimo una volta per fotogramma (ridisegna un gradiente a tutto schermo).
+    let beaconFrame = 0;
     const onPointer = (e: PointerEvent) => {
       journey.pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
       journey.pointer.y = (e.clientY / window.innerHeight) * 2 - 1;
-      beacon?.style.setProperty("--bx", `${e.clientX}px`);
-      beacon?.style.setProperty("--by", `${e.clientY}px`);
+      const p7 = journey.local[journey.local.length - 1];
+      if (!beacon || p7 <= 0 || p7 >= 1 || beaconFrame) return;
+      beaconFrame = requestAnimationFrame(() => {
+        beaconFrame = 0;
+        beacon.style.setProperty("--bx", `${e.clientX}px`);
+        beacon.style.setProperty("--by", `${e.clientY}px`);
+      });
     };
     window.addEventListener("pointermove", onPointer, { passive: true });
     // Passaggio sul titolo del progetto attivo: distorsione leggera nella pellicola (capitolo 3).
@@ -149,6 +161,7 @@ export function JourneyClient({ nav, labels, scene, projects, silhouette, childr
     return () => {
       links.forEach((a) => { a.removeEventListener("pointerenter", on); a.removeEventListener("pointerleave", off); a.removeEventListener("focus", on); a.removeEventListener("blur", off); });
       window.removeEventListener("pointermove", onPointer);
+      cancelAnimationFrame(beaconFrame);
       gsap.ticker.remove(tick);
       ctx.revert();
       lenis?.destroy();
@@ -158,6 +171,9 @@ export function JourneyClient({ nav, labels, scene, projects, silhouette, childr
       delete document.documentElement.dataset.journey;
     };
   }, [mode]);
+
+  // Elemento della tela memorizzato: il cambio di capitolo (puntini) non ridisegna l'albero 3D.
+  const stage = useMemo(() => (mode === "3d" ? <Stage /> : null), [mode]);
 
   const goTo = (i: number) => {
     const t = triggers.current[i];
@@ -171,7 +187,7 @@ export function JourneyClient({ nav, labels, scene, projects, silhouette, childr
 
   return (
     <div ref={root} className="relative">
-      {mode === "3d" && <Stage />}
+      {stage}
       <div className="relative z-10">{children}</div>
       {/* Puntini in differenza di colore: leggibili sia sul nero sia sul crema. */}
       <nav aria-label={nav} className="fixed top-1/2 right-3 z-30 hidden -translate-y-1/2 text-white mix-blend-difference sm:block md:right-6">
